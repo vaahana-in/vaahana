@@ -17,7 +17,7 @@ async function connectToMongo() {
   }
 }
 
-app.get("/", (res) => {
+app.get("/", (req, res) => {
   res.send(`Server running on port ${PORT}`);
 });
 
