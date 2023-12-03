@@ -2,29 +2,81 @@
 
 ## Overview
 
-Welcome to **Vaahana**, the go-to place for motorbike enthusiasts and those in need of a quick, convenient ride. Imagine Airbnb, but for motorbikes. You've got a bike chilling in your garage? Put it to work and earn some cash. Need a ride? Browse Vaahana, find a bike near you, and zoom off to your destination.
+Welcome to **Vaahana**, the Airbnb for motorbikes. Whether you want to list your idle bike to earn money or need a ride and wish to rent one, Vaahana is your platform.
+
+## Authors
+- [Shreedhar Hegde](https://www.linkedin.com/in/shreedhar-hegde/)
+- [Shreekar Hegde](https://www.linkedin.com/in/shreekar-hegde/)
+- [Sudhanva Narayana](https://linkedin.com/in/nsudhanva/)
 
 ## How It Works
 
 ### For Bike Owners (Hosts)
-
-1. **List Your Bike**: Upload details and pictures of your bike. Set your price and availability.
-2. **Receive Requests**: Get notified when someone wants to rent your bike. You have the power to accept or decline.
-3. **Earn Money**: After a successful rental, you'll get paid securely through our platform. Ka-ching!
+- **List Your Bike**
+- **Receive Requests**
+- **Earn Money**
 
 ### For Riders (Guests)
-
-1. **Find a Bike**: Search for available bikes near you. Check out details, prices, and reviews.
-2. **Book It**: Found your dream ride? Book it for your desired time frame.
-3. **Ride and Return**: Enjoy your ride and return the bike to the same spot. Don’t forget to leave a review!
+- **Find a Bike**
+- **Book It**
+- **Ride and Return**
 
 ## Tech Stack
 
-- **MERN**: We're all about MongoDB, Express.js, and Node.js. But here’s the twist - we use Next.js instead of plain React for that extra oomph in server-side rendering and SEO benefits.
-- **Next.js**: Supercharges our React game, giving us faster page loads, static exporting, and more.
-- **MongoDB**: Our data storage hero, handling all our data needs flexibly.
-- **Express.js and Node.js**: The backbone of our server-side, keeping things running smoothly.
+- **MERN**: MongoDB, Express.js, React with TypeScript, and Node.js.
+- **MongoDB**: For data storage.
+- **Express.js and Node.js**: For server functionality.
 
 ## Open Source
 
-Vaahana is an open-source project. That means you can peek under the hood, contribute, and help us steer this ship. Whether it's fixing bugs, adding features, or just giving suggestions, all hands are welcome on deck. Check out our [contributing guidelines](CONTRIBUTING.md) to get started.
+Vaahana is open source. Contribute by fixing bugs, adding features, or offering suggestions. See our [contributing guidelines](CONTRIBUTING.md).
+
+## Usage
+
+1. **Docker**: Install Docker Desktop or Docker Engine.
+2. **Text Editor**: Use any editor like VSCode or Sublime Text.
+
+## Getting Started
+
+1. **Clone Your Repository**: Clone your Git repository or ensure you have the project files.
+2. **Navigate to Your Project**: Go to the root directory with `docker-compose.yml`.
+
+## Understanding Docker Compose File
+
+The `docker-compose.yml` defines these services:
+
+- **Traefik**: A reverse proxy on ports 80 and 8080.
+- **Server**: The Node.js/Express backend.
+- **Client**: The React frontend, depending on the Server service.
+
+## Building and Running with Docker Compose
+
+1. **Build the Services**: Execute `docker-compose build`.
+2. **Run the Services**: Use `docker-compose up`. Use `-d` for detached mode.
+3. **Check the Containers**: Use `docker ps`.
+
+## Accessing the Application in the Browser
+
+1. **Client**: Access at `http://client.vaahana.localhost`. Update `hosts` file for this URL.
+2. **Server**: Access at `http://server.vaahana.localhost`. Update `hosts` file accordingly.
+
+## Service Configuration Details
+
+- **Traefik**: Configured for Docker and web interface entrypoints.
+- **Server**: Updated environment variables and volume mappings.
+- **Client**: Dependency on the server and updated environment variable.
+
+## Monitoring and Logs
+
+- **View Logs**: Use `docker-compose logs [service_name]`.
+- **Stopping Services**: Use `docker-compose down`.
+
+## Hot Reloading
+
+Supports hot reloading for client and server code updates.
+
+## Troubleshooting
+
+- **Container Crashes**: Check logs for errors.
+- **Network Issues**: Check for port or URL conflicts.
+- **Docker Daemon**: Ensure it's active.

@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  traefik:
+    container_name: traefik-container-vaahana
+    image: traefik:v2.10.6
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  server:
+    container_name: server-container-vaahana
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/vaahana
+      SERVER_HOST: server
+      SERVER_PORT: 3000
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    labels:
+      - traefik.http.routers.server.rule=Host(`server.vaahana.localhost`)
+
+  client:
+    container_name: client-container-vaahana
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      REACT_APP_PUBLIC_SERVER_URL: http://server:3000
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+    labels:
+      - traefik.http.routers.client.rule=Host(`client.vaahana.localhost`)
+    depends_on:
+      - server
