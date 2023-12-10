@@ -6,14 +6,16 @@ import { useState, useEffect } from 'react';
 import { CircleF, GoogleMap, MarkerF, LoadScript } from '@react-google-maps/api';
 import logo from '../assets/motorbike.png'
 import { faker } from '@faker-js/faker';
+import { v4 as uuidv4 } from 'uuid';
 
-const Map = () => {
+
+const Map = ({ onBikeClick }) => {
     // const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
     const google = window.google;
     const randomData = [];
 
     const [currentLocation, setCurrentLocation] = useState(null);
-    const [randomUserData, setRandomUserData] = useState([]);
+    const [randomBikeData, setRandomBikeData] = useState([]);
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -33,26 +35,141 @@ const Map = () => {
         currentLocation && generateRandomUserData();
     }, [])
 
+    const bikeData = [
+        {
+            id: uuidv4(),
+            name: 'Honda CBR500R',
+            imageUrl: 'https://mcn-images.bauersecure.com/wp-images/5060/honda_cbr500r_01.jpg',
+            ratePerHour: 15.99,
+            brand: 'Honda',
+            type: 'Sport Bike',
+            year: 2022,
+            engineDisplacement: '471cc',
+            color: 'Red',
+            available: true,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'Yamaha MT-07',
+            imageUrl: 'https://imgd.aeplcdn.com/1280x720/n/cw/ec/146941/mt-07-right-front-three-quarter.jpeg?isig=0',
+            ratePerHour: 18.50,
+            brand: 'Yamaha',
+            type: 'Naked Bike',
+            year: 2021,
+            engineDisplacement: '689cc',
+            color: 'Blue',
+            available: false,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'Kawasaki Ninja 650',
+            imageUrl: 'https://imgd.aeplcdn.com/1280x720/n/cw/ec/154683/ninja-650-2023-right-front-three-quarter.jpeg?isig=0',
+            ratePerHour: 20.75,
+            brand: 'Kawasaki',
+            type: 'Sport Tourer',
+            year: 2023,
+            engineDisplacement: '649cc',
+            color: 'Green',
+            available: true,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'Suzuki GSX-R750',
+            imageUrl: 'https://bd.gaadicdn.com/upload/userfiles/images/5f6882ef3a74c.jpg',
+            ratePerHour: 22.99,
+            brand: 'Suzuki',
+            type: 'Sport Bike',
+            year: 2022,
+            engineDisplacement: '749cc',
+            color: 'Blue/White',
+            available: true,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'Ducati Monster 821',
+            imageUrl: 'https://images.carandbike.com/bike-images/colors/ducati/monster-821/ducati-monster-821-ducati-red.png?v=1578656239',
+            ratePerHour: 25.50,
+            brand: 'Ducati',
+            type: 'Naked Bike',
+            year: 2021,
+            engineDisplacement: '821cc',
+            color: 'Red',
+            available: false,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'BMW R1250GS',
+            imageUrl: 'https://cdni.autocarindia.com/Utils/ImageResizer.ashx?n=https://cdni.autocarindia.com/ExtraImages/20210705063618_GS.jpg',
+            ratePerHour: 28.75,
+            brand: 'BMW',
+            type: 'Adventure Tourer',
+            year: 2023,
+            engineDisplacement: '1254cc',
+            color: 'Black',
+            available: true,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'Harley-Davidson Street Glide',
+            imageUrl: 'https://imgd.aeplcdn.com/1280x720/n/cw/ec/145691/street-glide-special-right-side-view.jpeg?isig=0',
+            ratePerHour: 30.99,
+            brand: 'Harley-Davidson',
+            type: 'Touring Bike',
+            year: 2022,
+            engineDisplacement: '1746cc',
+            color: 'Silver',
+            available: true,
+            ownerName: faker.person.fullName()
+        },
+        {
+            id: uuidv4(),
+            name: 'KTM 390 Duke',
+            imageUrl: 'https://cloudfront-us-east-1.images.arcpublishing.com/octane/FEVN2LYLSVGTFE4FKU6SWF7QHQ.jpg',
+            ratePerHour: 17.25,
+            brand: 'KTM',
+            type: 'Street Fighter',
+            year: 2021,
+            engineDisplacement: '373cc',
+            color: 'Orange',
+            available: false,
+            ownerName: faker.person.fullName()
+        },
+    ];
+
+    const findNearest = (arr, property) => {
+        if (arr.length === 0) {
+            return null;
+        }
+
+        return arr.reduce((nearest, current) => {
+            return current[property] < nearest[property] ? current : nearest;
+        }, arr[0]);
+    };
+
     const generateRandomUserData = () => {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < bikeData.length; i++) {
             const radius = 1 / 1000; // 1 degree of latitude is approximately 111 km
             const randomLat = currentLocation.lat + (Math.random() - 0.5) * 4 * radius;
             const randomLng = currentLocation.lng + (Math.random() - 0.5) * 4 * radius;
 
-            const fakeUserData = {
-                name: faker.internet.userName(),
-                bikeName: faker.vehicle.manufacturer(),
-                bikeModel: faker.vehicle.model(),
-                bikeMileage: faker.number.int({ min: 5000, max: 30000 }),
-
-            };
-
 
             const distance = calculateDistance(currentLocation, { lat: randomLat, lng: randomLng });
-            fakeUserData.distance = distance
+            bikeData[i].distance = distance
 
-            randomData.push({ coordinates: { lat: randomLat, lng: randomLng }, userData: fakeUserData, });
-            setRandomUserData(randomData);
+            randomData.push({ coordinates: { lat: randomLat, lng: randomLng }, bikeData: bikeData[i], });
+            setRandomBikeData(randomData);
+            const nearestBike = randomData && findNearest(randomBikeData, 'distance')
+            if (nearestBike) {
+
+                onBikeClick(nearestBike.bikeData)
+            }
+
 
         }
     };
@@ -71,15 +188,15 @@ const Map = () => {
 
         const distance = R * c; // Distance in kilometers
 
-        return distance;
+        return (distance * 1000).toFixed(2);
     };
 
     const deg2rad = (deg) => {
         return deg * (Math.PI / 180);
     };
 
-    const handleMarkerClick = (userData) => {
-        setSelectedUserData(userData);
+    const handleMarkerClick = (bikeData) => {
+        onBikeClick(bikeData)
     };
 
     const mapStyles = {
@@ -109,11 +226,11 @@ const Map = () => {
                                 visible: true,
                             }}
                         />
-                        {randomUserData && randomUserData.map((data, index) => (
+                        {randomBikeData && randomBikeData.map((data, index) => (
                             <MarkerF icon={{
                                 url: logo, scaledSize: new google.maps.Size(30, 30)
-                            }} key={index} position={data.coordinates} title={`Name: ${data.userData.name}\nBike: ${data.userData.bikeName}\nModel: ${data.userData.bikeModel}\nMileage: ${data.userData.bikeMileage} km`}
-                                onClick={() => handleMarkerClick(data.userData)}
+                            }} key={index} position={data.coordinates}
+                                onClick={() => handleMarkerClick(data.bikeData)}
                             />
                         ))}
 
