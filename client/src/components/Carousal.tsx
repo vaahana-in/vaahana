@@ -19,7 +19,7 @@ const MobileCarousel = ({ bike }) => {
                 </Paper>
 
             </Carousel>}
-            <BookNowButton />
+            <BookNowButton selectedBike={bike} />
         </div>
 
     );

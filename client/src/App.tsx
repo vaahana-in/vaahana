@@ -3,8 +3,6 @@ import MobileCarousel from './components/Carousal';
 import Map from './components/Map';
 import { useState } from 'react';
 
-
-
 function App() {
 
   const [bike, setBike] = useState(null)
@@ -25,6 +23,7 @@ function App() {
       <Button>Rent</Button>
       <Button>History</Button>
     </div>
+
   </>
 
 }
