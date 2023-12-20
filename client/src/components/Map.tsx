@@ -47,7 +47,7 @@ const Map = () => {
       }}
     >
       {currentLocation && (
-        <LoadScript googleMapsApiKey="AIzaSyD_ivf3wn0hYuBRN6u27nXNUqNS_4N20zg">
+        <LoadScript googleMapsApiKey="">
           <GoogleMap
             mapContainerStyle={mapStyles}
             center={currentLocation}
