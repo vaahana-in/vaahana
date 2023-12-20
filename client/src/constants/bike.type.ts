@@ -10,6 +10,6 @@ export interface Bike {
   color: string;
   available: boolean;
   ownerName: string;
-  coordinates?: { lat: number; lng: number };
+  coordinates?: google.maps.LatLng | google.maps.LatLngLiteral;
   distance?: number;
 }

@@ -2,12 +2,10 @@ import {
   Box,
   Container,
   List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  Avatar,
   Typography,
-  Divider,
+  CardContent,
+  CardMedia,
+  Card,
 } from "@material-ui/core";
 import * as React from "react";
 import { Bike } from "../../constants/bike.type";
@@ -32,41 +30,29 @@ const Ride = () => {
       </Box>
       <Box style={{ height: "44vh", overflow: "scroll" }}>
         <List style={{ width: "100%" }}>
-          {bikes?.map((bike: Bike, index) => (
+          {bikes?.map((bike: Bike) => (
             <React.Fragment key={bike.id + 1}>
-              <ListItem key={index} alignItems="center">
-                <ListItemAvatar>
-                  <Avatar
-                    style={{ width: "125px", height: "100px" }}
-                    src={bike?.imageUrl}
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  style={{ marginLeft: "3vw" }}
-                  primary={
-                    <Typography variant="body1">{bike?.name}</Typography>
-                  }
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        variant="body1"
-                        style={{ float: "right", color: "MenuText" }}
-                      >
-                        300m
-                      </Typography>
-                      <Typography variant="body1">
-                        {bike?.ratePerHour}/HR
-                      </Typography>
-                      <Typography variant="body2">{bike?.year}</Typography>
-                    </React.Fragment>
-                  }
+              <Card>
+                <CardMedia
+                  style={{ height: 170 }}
+                  image={bike.imageUrl}
+                  title="green iguana"
                 />
-              </ListItem>
-              <Divider
-                style={{ width: "100%", margin: 0 }}
-                variant="inset"
-                component="li"
-              />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {bike.name}
+                    <Typography
+                      variant="body2"
+                      style={{ color: "grey", float: "right" }}
+                    >
+                      {bike.ownerName}
+                    </Typography>
+                  </Typography>
+                  <Typography variant="body1" style={{ color: "navy" }}>
+                    {bike.distance} m
+                  </Typography>
+                </CardContent>
+              </Card>
             </React.Fragment>
           ))}
         </List>

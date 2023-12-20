@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { Bike } from "./bike.type";
 
 interface Location {
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number;
+  longitude: number;
 }
 
 const deg2rad = (deg: number) => {
@@ -31,16 +31,16 @@ const getCurrentLocation = async (): Promise<Location> => {
   });
 };
 
-const calculateDistance = (coord1, coord2) => {
+const calculateDistance = (coord1: Location, coord2: Location) => {
   const R = 6371; // Earth radius in kilometers
 
-  const dLat = deg2rad(coord2.latitude - coord1.latitude);
-  const dLng = deg2rad(coord2.longitude - coord1.longitude);
+  const dLat = deg2rad(coord2.latitude! - coord1.latitude!);
+  const dLng = deg2rad(coord2.longitude! - coord1.longitude!);
 
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(coord1.latitude)) *
-      Math.cos(deg2rad(coord2.latitude)) *
+    Math.cos(deg2rad(coord1.latitude!)) *
+      Math.cos(deg2rad(coord2.latitude!)) *
       Math.sin(dLng / 2) *
       Math.sin(dLng / 2);
 
@@ -168,10 +168,9 @@ const generateAndAssignRandomDistance = async () => {
 
   const { latitude, longitude } = await getCurrentLocation();
   for (let i = 0; i < bikes.length; i++) {
-    const radius = 1 / 1000; // 1 degree of latitude is approximately 111 km
-    const randomLat = latitude! + (Math.random() - 0.5) * 5 * radius;
-    const randomLng = longitude! + (Math.random() - 0.5) * 5 * radius;
-    console.log({ randomLat, randomLng });
+    const radius = 0.9 / 1000; // 1 degree of latitude is approximately 111 km
+    const randomLat = latitude! + (Math.random() - 0.9) * 8 * radius;
+    const randomLng = longitude! + (Math.random() - 0.9) * 8 * radius;
 
     const distance = calculateDistance(
       { latitude, longitude },
@@ -181,7 +180,7 @@ const generateAndAssignRandomDistance = async () => {
       }
     );
     bikes[i].distance = parseFloat(distance);
-    bikes[i].coordinates = { lat: randomLng, lng: randomLat };
+    bikes[i].coordinates = { lat: randomLat, lng: randomLng };
   }
   return bikes;
 };
