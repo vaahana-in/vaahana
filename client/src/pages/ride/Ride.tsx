@@ -30,31 +30,33 @@ const Ride = () => {
       </Box>
       <Box style={{ height: "44vh", overflow: "scroll" }}>
         <List style={{ width: "100%" }}>
-          {bikes?.map((bike: Bike) => (
-            <React.Fragment key={bike.id + 1}>
-              <Card>
-                <CardMedia
-                  style={{ height: 170 }}
-                  image={bike.imageUrl}
-                  title="green iguana"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {bike.name}
-                    <Typography
-                      variant="body2"
-                      style={{ color: "grey", float: "right" }}
-                    >
-                      {bike.ownerName}
+          {bikes
+            ?.sort((a, b) => a.distance! - b.distance!)
+            .map((bike: Bike) => (
+              <React.Fragment key={bike.id + 1}>
+                <Card>
+                  <CardMedia
+                    style={{ height: 170 }}
+                    image={bike.imageUrl}
+                    title="green iguana"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {bike.name}
+                      <Typography
+                        variant="body2"
+                        style={{ color: "grey", float: "right" }}
+                      >
+                        {bike.ownerName}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                  <Typography variant="body1" style={{ color: "navy" }}>
-                    {bike.distance} m
-                  </Typography>
-                </CardContent>
-              </Card>
-            </React.Fragment>
-          ))}
+                    <Typography variant="body1" style={{ color: "navy" }}>
+                      {bike.distance} m
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </React.Fragment>
+            ))}
         </List>
       </Box>
     </Container>
