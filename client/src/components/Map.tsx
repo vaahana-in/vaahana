@@ -8,10 +8,17 @@ import {
 import logo from "../assets/motorbike.png";
 import bikesData from "../constants/bikes.data";
 import { Bike } from "../constants/bike.type";
+import { useNavigate } from "react-router-dom";
 
 const Map = () => {
   // const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
   const google = window.google;
+  const navigate = useNavigate();
+
+  const handleBikeClick = () => {
+    console.log("bikeclick");
+    navigate("/walk");
+  };
 
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
@@ -23,6 +30,7 @@ const Map = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
+        console.log({ latitude, longitude });
         setCurrentLocation({ lat: latitude, lng: longitude });
 
         setTimeout(() => {
@@ -80,6 +88,7 @@ const Map = () => {
                       }}
                       key={index}
                       position={bike?.coordinates}
+                      onClick={handleBikeClick}
                     />
                   );
                 }
