@@ -7,10 +7,17 @@ import {
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
 import { Button, Container } from "@material-ui/core";
+import { useBikeContext } from "../context/BikeContext";
 
-const WalkRouteMap = ({ userLocation, bikeLocation }) => {
+type WalkRouteMapComponentProps = {
+  userLocation: { lat: number; lng: number };
+};
+
+const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
+  userLocation,
+}) => {
   const [directions, setDirections] = useState(null);
-
+  const { selectedBike } = useBikeContext();
   useEffect(() => {
     setTimeout(() => {
       const directionsService = new window.google.maps.DirectionsService();
@@ -22,8 +29,8 @@ const WalkRouteMap = ({ userLocation, bikeLocation }) => {
             userLocation.lng
           ),
           destination: new window.google.maps.LatLng(
-            bikeLocation.lat,
-            bikeLocation.lng
+            selectedBike.coordinates.lat,
+            selectedBike.coordinates.lng
           ),
           travelMode: window.google.maps.TravelMode.WALKING,
         },
@@ -36,7 +43,7 @@ const WalkRouteMap = ({ userLocation, bikeLocation }) => {
         }
       );
     }, 2000);
-  }, [userLocation, bikeLocation]);
+  }, [userLocation, selectedBike]);
 
   return (
     <Container style={{ display: "flex", flexDirection: "column" }}>
@@ -69,7 +76,7 @@ const WalkRouteMap = ({ userLocation, bikeLocation }) => {
                   url: logo,
                   scaledSize: new google.maps.Size(30, 30),
                 }}
-                position={bikeLocation}
+                position={selectedBike.coordinates}
               />
             </>
           )}

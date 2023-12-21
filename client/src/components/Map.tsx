@@ -6,17 +6,18 @@ import {
   LoadScript,
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
-import bikesData from "../constants/bikes.data";
 import { Bike } from "../constants/bike.type";
+import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
-
 const Map = () => {
   // const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
   const google = window.google;
   const navigate = useNavigate();
 
-  const handleBikeClick = () => {
-    console.log("bikeclick");
+  const { bikeData, selectBike } = useBikeContext();
+
+  const handleBikeClick = (selectedBike: Bike) => {
+    selectBike(selectedBike);
     navigate("/walk");
   };
 
@@ -30,7 +31,6 @@ const Map = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
-        console.log({ latitude, longitude });
         setCurrentLocation({ lat: latitude, lng: longitude });
 
         setTimeout(() => {
@@ -77,8 +77,9 @@ const Map = () => {
                 visible: true,
               }}
             />
-            {renderBikes &&
-              bikesData.map((bike: Bike, index) => {
+            {bikeData &&
+              renderBikes &&
+              bikeData.map((bike: Bike, index: number) => {
                 if (bike?.coordinates) {
                   return (
                     <MarkerF
@@ -88,7 +89,7 @@ const Map = () => {
                       }}
                       key={index}
                       position={bike?.coordinates}
-                      onClick={handleBikeClick}
+                      onClick={() => handleBikeClick(bike)}
                     />
                   );
                 }
