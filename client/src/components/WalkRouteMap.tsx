@@ -47,7 +47,9 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
 
   return (
     <Container style={{ display: "flex", flexDirection: "column" }}>
-      <LoadScript googleMapsApiKey="">
+      <LoadScript
+        googleMapsApiKey={`${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
+      >
         <GoogleMap
           mapContainerStyle={{ width: "100%", height: "600px" }}
           center={userLocation}

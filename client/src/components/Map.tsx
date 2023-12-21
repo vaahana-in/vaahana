@@ -10,7 +10,7 @@ import { Bike } from "../constants/bike.type";
 import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
 const Map = () => {
-  // const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+  console.log(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
   const google = window.google;
   const navigate = useNavigate();
 
@@ -55,7 +55,9 @@ const Map = () => {
       }}
     >
       {currentLocation && (
-        <LoadScript googleMapsApiKey="">
+        <LoadScript
+          googleMapsApiKey={`${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
+        >
           <GoogleMap
             mapContainerStyle={mapStyles}
             center={currentLocation}
