@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Button, Typography } from '@material-ui/core';
+import MobileCarousel from './components/Carousal';
+import Map from './components/Map';
+import { useState } from 'react';
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  const [bike, setBike] = useState(null)
+
+  const handleBikeClick = (bike) => {
+    setBike(bike)
+  }
+
+  return <>
+    <Typography variant="h4" align='center'>Bike Rental</Typography>
+    <div style={{ height: "40vh" }}>
+      <Map onBikeClick={handleBikeClick} />
+    </div>
+    <MobileCarousel bike={bike} />
+    <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: "space-around" }}>
+      <Button>Profile</Button>
+      <Button>Ride</Button>
+      <Button>Rent</Button>
+      <Button>History</Button>
+    </div>
+  </>
+
 }
 
 export default App
