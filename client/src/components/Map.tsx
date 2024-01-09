@@ -4,13 +4,13 @@ import {
   GoogleMap,
   MarkerF,
   LoadScript,
+  InfoWindowF,
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
 import { Bike } from "../constants/bike.type";
 import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
 const Map = () => {
-  console.log(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
   const google = window.google;
   const navigate = useNavigate();
 
@@ -84,15 +84,23 @@ const Map = () => {
               bikeData.map((bike: Bike, index: number) => {
                 if (bike?.coordinates) {
                   return (
-                    <MarkerF
-                      icon={{
-                        url: logo,
-                        scaledSize: new google.maps.Size(30, 30),
-                      }}
-                      key={index}
-                      position={bike?.coordinates}
-                      onClick={() => handleBikeClick(bike)}
-                    />
+                    <>
+                      <MarkerF
+                        icon={{
+                          url: logo,
+                          scaledSize: new google.maps.Size(30, 30),
+                        }}
+                        key={index}
+                        position={bike?.coordinates}
+                        onClick={() => handleBikeClick(bike)}
+                      >
+                        <InfoWindowF position={bike?.coordinates}>
+                          <p style={{ padding: 0, margin: 0 }}>
+                            {bike.distance} M
+                          </p>
+                        </InfoWindowF>
+                      </MarkerF>
+                    </>
                   );
                 }
               })}

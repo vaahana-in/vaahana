@@ -6,8 +6,12 @@ import {
   MarkerF,
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
-import { Button, Container } from "@material-ui/core";
+import { Button, Container, Divider } from "@material-ui/core";
 import { useBikeContext } from "../context/BikeContext";
+import SelectTime from "./SelectTime";
+import SelectedBikeInfo from "./SelectedBikeInfo";
+import CallOwner from "./CallOwner";
+import RequestApproval from "./RequestApproval";
 
 type WalkRouteMapComponentProps = {
   userLocation: { lat: number; lng: number };
@@ -46,50 +50,79 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
   }, [userLocation, selectedBike]);
 
   return (
-    <Container style={{ display: "flex", flexDirection: "column" }}>
-      <LoadScript
-        googleMapsApiKey={`${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
+    <Container
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        padding: 0,
+        height: "98vh",
+      }}
+    >
+      <Container
+        style={{ height: "100%", width: "100%", margin: 0, padding: 0 }}
       >
-        <GoogleMap
-          mapContainerStyle={{ width: "100%", height: "600px" }}
-          center={userLocation}
-          zoom={13}
+        <LoadScript
+          googleMapsApiKey={`${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
         >
-          {directions && (
-            <>
-              <DirectionsRenderer
-                directions={directions}
-                options={{
-                  suppressMarkers: true,
-                  polylineOptions: {
-                    strokeColor: "#ff0000", // You can customize the color of the route
-                  },
-                }}
-              />
-              <MarkerF
-                icon={{
-                  url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU",
-                  scaledSize: new google.maps.Size(30, 30),
-                }}
-                position={userLocation}
-              />
-              <MarkerF
-                icon={{
-                  url: logo,
-                  scaledSize: new google.maps.Size(30, 30),
-                }}
-                position={selectedBike.coordinates}
-              />
-            </>
-          )}
-        </GoogleMap>
-      </LoadScript>
-      <Button
-        variant="contained"
-        style={{ background: "blue", color: "white", margin: 20 }}
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "500px" }}
+            center={userLocation}
+            zoom={13}
+          >
+            {directions && (
+              <>
+                <DirectionsRenderer
+                  directions={directions}
+                  options={{
+                    suppressMarkers: true,
+                    polylineOptions: {
+                      strokeColor: "#ff0000", // You can customize the color of the route
+                    },
+                  }}
+                />
+                <MarkerF
+                  icon={{
+                    url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU",
+                    scaledSize: new google.maps.Size(30, 30),
+                  }}
+                  position={userLocation}
+                />
+                <MarkerF
+                  icon={{
+                    url: logo,
+                    scaledSize: new google.maps.Size(30, 30),
+                  }}
+                  position={selectedBike.coordinates}
+                />
+              </>
+            )}
+          </GoogleMap>
+        </LoadScript>
+        <Button
+          variant="contained"
+          style={{ background: "blue", color: "white", margin: 20 }}
+        >
+          Start Navigation
+        </Button>
+      </Container>
+
+      <Divider />
+      <Container
+        style={{
+          height: "25%",
+          background: "purple",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
-        Start Navigation
-      </Button>
+        <SelectTime />
+        <SelectedBikeInfo />
+      </Container>
+      <Container style={{ height: "25%" }}>
+        <CallOwner />
+        <RequestApproval />
+      </Container>
     </Container>
   );
 };

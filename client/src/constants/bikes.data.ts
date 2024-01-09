@@ -169,8 +169,8 @@ const generateAndAssignRandomDistance = async () => {
   const { latitude, longitude } = await getCurrentLocation();
   for (let i = 0; i < bikes.length; i++) {
     const radius = 0.9 / 1000; // 1 degree of latitude is approximately 111 km
-    const randomLat = latitude! + (Math.random() - 0.9) * 8 * radius;
-    const randomLng = longitude! + (Math.random() - 0.9) * 8 * radius;
+    const randomLat = latitude! + (Math.random() - 0.5) * 14 * radius;
+    const randomLng = longitude! + (Math.random() - 0.5) * 14 * radius;
 
     const distance = calculateDistance(
       { latitude, longitude },
