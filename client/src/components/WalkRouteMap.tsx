@@ -98,9 +98,10 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
             )}
           </GoogleMap>
         </LoadScript>
+
         <Button
           variant="contained"
-          style={{ background: "blue", color: "white", margin: 20 }}
+          style={{ background: "blue", color: "white" }}
         >
           Start Navigation
         </Button>
@@ -110,16 +111,35 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
       <Container
         style={{
           height: "25%",
-          background: "purple",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          width: "100%",
         }}
       >
-        <SelectTime />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginTop: "10px",
+          }}
+        >
+          <label>Select Time</label>
+          <SelectTime />
+        </div>
+
         <SelectedBikeInfo />
       </Container>
-      <Container style={{ height: "25%" }}>
+      <Container
+        style={{
+          height: "25%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <CallOwner />
         <RequestApproval />
       </Container>

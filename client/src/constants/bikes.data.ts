@@ -65,6 +65,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Red",
       available: true,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -79,6 +80,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Blue",
       available: false,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -93,6 +95,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Green",
       available: true,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -107,6 +110,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Blue/White",
       available: true,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -121,6 +125,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Red",
       available: false,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -135,6 +140,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Black",
       available: true,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -149,6 +155,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Silver",
       available: true,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
     {
       id: uuidv4(),
@@ -163,6 +170,7 @@ const generateAndAssignRandomDistance = async () => {
       color: "Orange",
       available: false,
       ownerName: faker.person.fullName(),
+      regNum: faker.vehicle.vin().slice(5),
     },
   ];
 

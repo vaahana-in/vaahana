@@ -12,4 +12,5 @@ export interface Bike {
   ownerName: string;
   coordinates?: google.maps.LatLng | google.maps.LatLngLiteral;
   distance?: number;
+  regNum: string;
 }
