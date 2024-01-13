@@ -57,7 +57,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "Honda CBR500R",
       imageUrl:
         "https://mcn-images.bauersecure.com/wp-images/5060/honda_cbr500r_01.jpg",
-      ratePerHour: 15.99,
+      ratePerMinute: 2,
       brand: "Honda",
       type: "Sport Bike",
       year: 2022,
@@ -72,7 +72,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "Yamaha MT-07",
       imageUrl:
         "https://imgd.aeplcdn.com/1280x720/n/cw/ec/146941/mt-07-right-front-three-quarter.jpeg?isig=0",
-      ratePerHour: 18.5,
+      ratePerMinute: 3,
       brand: "Yamaha",
       type: "Naked Bike",
       year: 2021,
@@ -87,7 +87,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "Kawasaki Ninja 650",
       imageUrl:
         "https://imgd.aeplcdn.com/1280x720/n/cw/ec/154683/ninja-650-2023-right-front-three-quarter.jpeg?isig=0",
-      ratePerHour: 20.75,
+      ratePerMinute: 5,
       brand: "Kawasaki",
       type: "Sport Tourer",
       year: 2023,
@@ -102,7 +102,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "Suzuki GSX-R750",
       imageUrl:
         "https://bd.gaadicdn.com/upload/userfiles/images/5f6882ef3a74c.jpg",
-      ratePerHour: 22.99,
+      ratePerMinute: 4,
       brand: "Suzuki",
       type: "Sport Bike",
       year: 2022,
@@ -117,7 +117,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "Ducati Monster 821",
       imageUrl:
         "https://images.carandbike.com/bike-images/colors/ducati/monster-821/ducati-monster-821-ducati-red.png?v=1578656239",
-      ratePerHour: 25.5,
+      ratePerMinute: 8,
       brand: "Ducati",
       type: "Naked Bike",
       year: 2021,
@@ -132,7 +132,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "BMW R1250GS",
       imageUrl:
         "https://cdni.autocarindia.com/Utils/ImageResizer.ashx?n=https://cdni.autocarindia.com/ExtraImages/20210705063618_GS.jpg",
-      ratePerHour: 28.75,
+      ratePerMinute: 7,
       brand: "BMW",
       type: "Adventure Tourer",
       year: 2023,
@@ -147,7 +147,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "Harley-Davidson Street Glide",
       imageUrl:
         "https://imgd.aeplcdn.com/1280x720/n/cw/ec/145691/street-glide-special-right-side-view.jpeg?isig=0",
-      ratePerHour: 30.99,
+      ratePerMinute: 13,
       brand: "Harley-Davidson",
       type: "Touring Bike",
       year: 2022,
@@ -162,7 +162,7 @@ const generateAndAssignRandomDistance = async () => {
       name: "KTM 390 Duke",
       imageUrl:
         "https://cloudfront-us-east-1.images.arcpublishing.com/octane/FEVN2LYLSVGTFE4FKU6SWF7QHQ.jpg",
-      ratePerHour: 17.25,
+      ratePerMinute: 9,
       brand: "KTM",
       type: "Street Fighter",
       year: 2021,

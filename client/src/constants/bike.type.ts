@@ -2,7 +2,7 @@ export interface Bike {
   id: string;
   name: string;
   imageUrl: string;
-  ratePerHour: number;
+  ratePerMinute: number;
   brand: string;
   type: string;
   year: number;

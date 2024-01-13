@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Ride from "./pages/ride/Ride";
 import WalkRouteMap from "./components/WalkRouteMap";
+import BookingDetails from "./pages/booking-details/BookingDetails";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             />
           }
         />
+        <Route path="/booking-details" element={<BookingDetails />} />
       </Routes>
     </>
   );

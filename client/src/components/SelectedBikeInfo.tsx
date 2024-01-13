@@ -21,13 +21,14 @@ const SelectedBikeInfo = () => {
           flexDirection: "column",
           marginTop: 20,
           padding: 20,
+          textAlign: "center",
         }}
       >
         <p style={{ margin: 0, padding: 0, fontWeight: "bold" }}>
           {bikeDetails?.regNum}
         </p>
         <p style={{ margin: 0, padding: 0 }}>{bikeDetails.ownerName}</p>
-        <p style={{ margin: 0, padding: 0 }}>{bikeDetails?.type}</p>
+        <p style={{ margin: 0, padding: 0 }}>{bikeDetails?.name}</p>
       </div>
     )
   );
