@@ -3,6 +3,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Ride from "./pages/ride/Ride";
 import WalkRouteMap from "./components/WalkRouteMap";
 import BookingDetails from "./pages/booking-details/BookingDetails";
+import Lend from "./pages/Lend/Lend";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/ride" element={<Ride />} />
+        <Route path="/lend" element={<Lend />} />
         <Route
           path="/walk"
           element={
