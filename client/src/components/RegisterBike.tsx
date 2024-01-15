@@ -15,6 +15,7 @@ const RegisterBike = ({ open, onClose }) => {
     ownershipDocument: "",
     ownerIdPhoto: "",
     ownerMobile: "",
+    chargesPerMin: "",
   });
 
   const handleChange = (field: string) => (event) => {
@@ -76,6 +77,15 @@ const RegisterBike = ({ open, onClose }) => {
           onChange={handleChange("bikeModel")}
         />
         <TextField
+          label="Charges per minute"
+          fullWidth
+          margin="normal"
+          type="number"
+          variant="outlined"
+          value={formData.chargesPerMin}
+          onChange={handleChange("chargesPerMin")}
+        />
+        <TextField
           label="Ownership Document"
           fullWidth
           margin="normal"
@@ -102,6 +112,7 @@ const RegisterBike = ({ open, onClose }) => {
           fullWidth
           margin="normal"
           variant="outlined"
+          type="number"
           value={formData.ownerMobile}
           onChange={handleChange("ownerMobile")}
         />
