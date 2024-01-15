@@ -14,9 +14,20 @@ import bikes from "../../constants/bikes.data";
 import { Bike } from "../../constants/bike.type";
 import { LibraryAdd, Delete, Edit, History } from "@mui/icons-material";
 import Requests from "../../components/Requests";
+import RegisterBike from "../../components/RegisterBike";
 
 export default function Lend() {
   const [value, setValue] = useState("1");
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -78,9 +89,10 @@ export default function Lend() {
               ))}
             </List>
           </Box>
-          <Button style={{ float: "right" }}>
+          <Button onClick={handleDialogOpen} style={{ float: "right" }}>
             <LibraryAdd fontSize="large" />
           </Button>
+          <RegisterBike open={dialogOpen} onClose={handleDialogClose} />
         </TabPanel>
         <TabPanel value="2">
           <Requests />
