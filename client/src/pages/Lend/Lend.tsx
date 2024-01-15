@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import bikes from "../../constants/bikes.data";
 import { Bike } from "../../constants/bike.type";
-import { LibraryAdd, Delete, Edit } from "@mui/icons-material";
+import { LibraryAdd, Delete, Edit, History } from "@mui/icons-material";
 import Requests from "../../components/Requests";
 
 export default function Lend() {
@@ -59,9 +59,12 @@ export default function Lend() {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "flex-end",
+                          justifyContent: "space-around",
                         }}
                       >
+                        <Button>
+                          <History />
+                        </Button>
                         <Button>
                           <Delete />
                         </Button>
