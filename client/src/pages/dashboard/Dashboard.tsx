@@ -24,6 +24,7 @@ function Dashboard() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        height: "98vh",
       }}
     >
       <NavLink style={buttonStyle} to="/lend">

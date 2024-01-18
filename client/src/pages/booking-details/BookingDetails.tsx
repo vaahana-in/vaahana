@@ -38,7 +38,8 @@ const BookingDetails = () => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "column",
-          height: "98vh",
+          height: "92vh",
+          marginTop: "7vh",
         }}
       >
         <div
