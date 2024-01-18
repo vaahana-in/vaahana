@@ -14,12 +14,16 @@ import bikes from "../../constants/bikes.data";
 import { Bike } from "../../constants/bike.type";
 import { LibraryAdd, Delete, Edit, History } from "@mui/icons-material";
 import Requests from "../../components/Requests";
-import RegisterBike from "../../components/RegisterBike";
+import AddBike from "../../components/AddBike";
+import axios from "axios";
+import { useAuthContext } from "../../context/AuthContext";
 
 export default function Lend() {
   const [value, setValue] = useState("1");
 
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const { authToken } = useAuthContext();
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -33,14 +37,22 @@ export default function Lend() {
     setValue(newValue);
   };
 
-  const [yourBikes, setYourBikes] = useState<Bike[]>(bikes);
+  const [yourBikes, setYourBikes] = useState(bikes);
 
   useEffect(() => {
-    setYourBikes(bikes.splice(0, 2));
-  }, []);
+    axios
+      .get("http://localhost:3000/bike", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((res) => {
+        setYourBikes(res.data);
+      });
+  }, [authToken]);
 
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%", typography: "body1", marginTop: "7vh" }}>
       <TabContext value={value}>
         <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
@@ -52,19 +64,18 @@ export default function Lend() {
           <Box
             style={{ width: "100%", overflow: "scroll", textAlign: "center" }}
           >
-            <p>Click on bike to view details</p>
             <List style={{ width: "100%" }}>
-              {yourBikes.map((bike: Bike) => (
+              {yourBikes.map((bike: any) => (
                 <React.Fragment key={bike.id + 1}>
                   <Card>
                     <CardMedia
-                      style={{ height: 200 }}
-                      image={bike.imageUrl}
+                      style={{ height: 180 }}
+                      image={bike.bikePhoto1}
                       title="green iguana"
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h6" component="div">
-                        {bike.name}
+                        {bike.bikeName} {bike.bikeModel}
                       </Typography>
                       <div
                         style={{
@@ -92,7 +103,7 @@ export default function Lend() {
           <Button onClick={handleDialogOpen} style={{ float: "right" }}>
             <LibraryAdd fontSize="large" />
           </Button>
-          <RegisterBike open={dialogOpen} onClose={handleDialogClose} />
+          <AddBike open={dialogOpen} onClose={handleDialogClose} />
         </TabPanel>
         <TabPanel value="2">
           <Requests />
