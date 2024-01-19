@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { Bike } from "../constants/bike.type";
-import bikesData from "../constants/bikes.data";
+import axios from "axios";
 
 type BikeProviderComponentProps = {
   children: ReactNode;
@@ -35,7 +35,9 @@ const BikeProvider: React.FC<BikeProviderComponentProps> = ({ children }) => {
   const [bookingHours, setBookingHours] = useState<BookingHours | null>(null);
 
   useEffect(() => {
-    setBikeData(bikesData);
+    axios.get("http://localhost:3000/bike").then((bikesRes) => {
+      setBikeData(bikesRes.data);
+    });
   }, [bikeData, selectedBike]);
 
   const updateBikeData = (newBikeData: Bike[]) => {

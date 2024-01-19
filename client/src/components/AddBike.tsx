@@ -7,13 +7,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
-import { Bike } from "../constants/bike.type";
 
 const AddBike = ({ open, onClose }) => {
-  useEffect(() => {
-    getLocation();
-  }, []);
-
   const [formData, setFormData] = useState({
     brand: "",
     model: "",
@@ -27,7 +22,7 @@ const AddBike = ({ open, onClose }) => {
 
   const { authToken } = useAuthContext();
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: string; value: unknown } }) => {
     const { name, value } = e.target;
 
     setFormData((prevFormData) => ({
@@ -63,9 +58,8 @@ const AddBike = ({ open, onClose }) => {
   //   }));
   // };
 
-  const handleLocationChange = (e) => {
+  const handleLocationChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
-
     setFormData((prevFormData) => ({
       ...prevFormData,
       location: {
@@ -73,14 +67,6 @@ const AddBike = ({ open, onClose }) => {
         [name]: value,
       },
     }));
-  };
-
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(handleLocationChange);
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
   };
 
   const handleSave = async () => {

@@ -11,14 +11,15 @@ function Register() {
     confirmPassword: "",
   });
 
-  const handleChange = (field: string) => (event) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: event.target.value,
-    }));
-  };
+  const handleChange =
+    (field: string) => (event: { target: { value: unknown } }) => {
+      setFormData((prevData) => ({
+        ...prevData,
+        [field]: event.target.value,
+      }));
+    };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     // Add your registration logic here, e.g., send data to the server
     console.log("Registration data:", formData);

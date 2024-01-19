@@ -7,16 +7,16 @@ import {
   InfoWindowF,
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
-import { Bike } from "../constants/bike.type";
+import { Bike, BikeResponse } from "../constants/bike.type";
 import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { calculateDistance } from "../constants/bikes.data";
+import { calculateDistance } from "../utils/helpers";
 const Map = () => {
   const google = window.google;
   const navigate = useNavigate();
 
-  const { bikeData, selectBike } = useBikeContext();
+  const { selectBike } = useBikeContext();
 
   const handleBikeClick = (selectedBike: Bike) => {
     selectBike(selectedBike);
@@ -37,7 +37,7 @@ const Map = () => {
         setCurrentLocation({ lat: latitude, lng: longitude });
 
         axios.get("http://localhost:3000/bike").then(async (bikesRes) => {
-          const bikesWithDistance = bikesRes.data.map((bike) => {
+          const bikesWithDistance = bikesRes.data.map((bike: BikeResponse) => {
             return {
               ...bike,
               distance: calculateDistance(

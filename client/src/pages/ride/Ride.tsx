@@ -9,12 +9,10 @@ import {
 } from "@material-ui/core";
 import { Fragment, useEffect, useState } from "react";
 import { BikeResponse } from "../../constants/bike.type";
-import {
-  calculateDistance,
-  getCurrentLocation,
-} from "../../constants/bikes.data";
+
 import Map from "../../components/Map";
 import axios from "axios";
+import { calculateDistance, getCurrentLocation } from "../../utils/helpers";
 
 const Ride = () => {
   const [bikesRes, setBikesRes] = useState(null);

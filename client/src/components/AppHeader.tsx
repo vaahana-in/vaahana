@@ -14,7 +14,7 @@ import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   appBar: {
     backgroundColor: "#2196F3",
   },
@@ -56,8 +56,7 @@ const AppHeader = () => {
   };
 
   const handleLogout = () => {
-    // Implement your logout logic here
-    // For example, clear user authentication token, redirect, etc.
+    localStorage.clear();
     setToken(null);
     handleMenuClose();
     navigate("/login");
