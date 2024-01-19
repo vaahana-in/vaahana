@@ -10,6 +10,8 @@ import logo from "../assets/motorbike.png";
 import { Bike } from "../constants/bike.type";
 import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { calculateDistance } from "../constants/bikes.data";
 const Map = () => {
   const google = window.google;
   const navigate = useNavigate();
@@ -27,11 +29,30 @@ const Map = () => {
   } | null>(null);
 
   const [renderBikes, setRenderBikes] = useState(false);
+  const [bikes, setBikes] = useState(null);
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         setCurrentLocation({ lat: latitude, lng: longitude });
+
+        axios.get("http://localhost:3000/bike").then(async (bikesRes) => {
+          const bikesWithDistance = bikesRes.data.map((bike) => {
+            return {
+              ...bike,
+              distance: calculateDistance(
+                { latitude, longitude },
+                bike.location
+              ),
+              location: {
+                lat: bike.location.latitude,
+                lng: bike.location.longitude,
+              },
+            };
+          });
+
+          setBikes(bikesWithDistance);
+        });
 
         setTimeout(() => {
           setRenderBikes(true);
@@ -79,10 +100,10 @@ const Map = () => {
                 visible: true,
               }}
             />
-            {bikeData &&
+            {bikes &&
               renderBikes &&
-              bikeData.map((bike: Bike, index: number) => {
-                if (bike?.coordinates) {
+              bikes.map((bike, index: number) => {
+                if (bike?.location) {
                   return (
                     <>
                       <MarkerF
@@ -91,10 +112,10 @@ const Map = () => {
                           scaledSize: new google.maps.Size(30, 30),
                         }}
                         key={index}
-                        position={bike?.coordinates}
+                        position={bike?.location}
                         onClick={() => handleBikeClick(bike)}
                       >
-                        <InfoWindowF position={bike?.coordinates}>
+                        <InfoWindowF position={bike?.location}>
                           <p style={{ padding: 0, margin: 0 }}>
                             {bike.distance} M
                           </p>

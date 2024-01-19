@@ -70,12 +70,12 @@ export default function Lend() {
                   <Card>
                     <CardMedia
                       style={{ height: 180 }}
-                      image={bike.bikePhoto1}
+                      image={bike.image}
                       title="green iguana"
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h6" component="div">
-                        {bike.bikeName} {bike.bikeModel}
+                        {bike.brand} {bike.model} {bike.makeYear}
                       </Typography>
                       <div
                         style={{

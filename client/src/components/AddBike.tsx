@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,28 +7,52 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
+import { Bike } from "../constants/bike.type";
 
 const AddBike = ({ open, onClose }) => {
+  useEffect(() => {
+    getLocation();
+  }, []);
+
   const [formData, setFormData] = useState({
-    ownerName: "",
-    regNumber: "",
-    bikeName: "",
-    bikeModel: "",
-    ownershipDocument: "",
-    ownerIdPhoto: "",
-    ownerMobile: "",
-    chargesPerMin: "",
-    bikePhoto1: "",
+    brand: "",
+    model: "",
+    makeYear: "",
+    licensePlate: "",
+    location: { latitude: "", longitude: "" },
+    availability: true,
+    pricePerMinute: 0,
+    image: "",
   });
 
   const { authToken } = useAuthContext();
 
-  const handleChange = (field: string) => (event) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: event.target.value,
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
     }));
   };
+
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        setFormData((prevFormData: any) => ({
+          ...prevFormData,
+          location: { latitude, longitude },
+        }));
+      });
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
 
   // const handleFileChange = (field: string) => (event) => {
   //   const file = event.target.files[0];
@@ -39,16 +63,32 @@ const AddBike = ({ open, onClose }) => {
   //   }));
   // };
 
+  const handleLocationChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      location: {
+        ...prevFormData.location,
+        [name]: value,
+      },
+    }));
+  };
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(handleLocationChange);
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   const handleSave = async () => {
-    const addBikeRes = await axios.post(
-      `http://localhost:3000/bike`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
+    await axios.post(`http://localhost:3000/bike`, formData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
 
     onClose();
   };
@@ -58,89 +98,70 @@ const AddBike = ({ open, onClose }) => {
       <DialogTitle>Add Bike</DialogTitle>
       <DialogContent>
         <TextField
-          label="Bike Owner Name"
+          label="Brand"
+          name="brand"
+          value={formData.brand}
+          onChange={handleChange}
           fullWidth
           margin="normal"
-          variant="outlined"
-          value={formData.ownerName}
-          onChange={handleChange("ownerName")}
         />
         <TextField
-          label="Bike Registration Number"
+          label="Model"
+          name="model"
+          value={formData.model}
+          onChange={handleChange}
           fullWidth
           margin="normal"
-          variant="outlined"
-          value={formData.regNumber}
-          onChange={handleChange("regNumber")}
         />
         <TextField
-          label="Bike Name"
+          label="Make Year"
+          name="makeYear"
+          value={formData.makeYear}
+          onChange={handleChange}
           fullWidth
           margin="normal"
-          variant="outlined"
-          value={formData.bikeName}
-          onChange={handleChange("bikeName")}
         />
         <TextField
-          label="Bike Model"
+          label="License Plate"
+          name="licensePlate"
+          value={formData.licensePlate}
+          onChange={handleChange}
           fullWidth
           margin="normal"
-          variant="outlined"
-          value={formData.bikeModel}
-          onChange={handleChange("bikeModel")}
         />
         <TextField
-          label="Charges per minute"
+          label="Latitude"
+          name="latitude"
+          value={formData.location.latitude}
+          onChange={handleLocationChange}
           fullWidth
           margin="normal"
+        />
+        <TextField
+          label="Longitude"
+          name="longitude"
+          value={formData.location.longitude}
+          onChange={handleLocationChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="Price Per Minute"
+          name="pricePerMinute"
           type="number"
-          variant="outlined"
-          value={formData.chargesPerMin}
-          onChange={handleChange("chargesPerMin")}
-        />
-        <TextField
-          label="Ownership Document"
+          value={formData.pricePerMinute}
+          onChange={handleChange}
           fullWidth
           margin="normal"
-          variant="outlined"
+        />
+        <TextField
+          label="Image"
+          name="image"
           type="string"
-          onChange={handleChange("ownershipDocument")}
-        />
-        <TextField
-          label="Owner ID Photo"
+          value={formData.image}
+          onChange={handleChange}
           fullWidth
           margin="normal"
-          variant="outlined"
-          type="string"
-          onChange={handleChange("ownerIdPhoto")}
-        />
-        <TextField
-          label="Bike Photo 1"
-          fullWidth
-          margin="normal"
-          variant="outlined"
-          type="text"
-          onChange={handleChange("bikePhoto1")}
-        />
-        {/* <TextField
-          label="Bike Photo 2"
-          fullWidth
-          margin="normal"
-          variant="outlined"
-          type="file"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={handleFileChange("bikePhoto2")}
-        /> */}
-        <TextField
-          label="Owner Mobile Number"
-          fullWidth
-          margin="normal"
-          variant="outlined"
-          type="number"
-          value={formData.ownerMobile}
-          onChange={handleChange("ownerMobile")}
         />
       </DialogContent>
       <DialogActions>

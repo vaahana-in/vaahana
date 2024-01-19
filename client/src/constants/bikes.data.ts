@@ -11,7 +11,7 @@ const deg2rad = (deg: number) => {
   return deg * (Math.PI / 180);
 };
 
-const getCurrentLocation = async (): Promise<Location> => {
+export const getCurrentLocation = async (): Promise<Location> => {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -31,7 +31,7 @@ const getCurrentLocation = async (): Promise<Location> => {
   });
 };
 
-const calculateDistance = (coord1: Location, coord2: Location) => {
+export const calculateDistance = (coord1: Location, coord2: Location) => {
   const R = 6371; // Earth radius in kilometers
 
   const dLat = deg2rad(coord2.latitude! - coord1.latitude!);

@@ -33,8 +33,8 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
             userLocation.lng
           ),
           destination: new window.google.maps.LatLng(
-            selectedBike.coordinates.lat,
-            selectedBike.coordinates.lng
+            selectedBike.location.lat,
+            selectedBike.location.lng
           ),
           travelMode: window.google.maps.TravelMode.WALKING,
         },
@@ -92,7 +92,7 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
                     url: logo,
                     scaledSize: new google.maps.Size(30, 30),
                   }}
-                  position={selectedBike.coordinates}
+                  position={selectedBike.location}
                 />
               </>
             )}
