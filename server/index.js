@@ -1,26 +1,40 @@
 const express = require("express");
-const { MongoClient } = require("mongodb");
+const mongoose = require("mongoose");
+require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.SERVER_PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL;
+app.use(cors());
 
-async function connectToMongo() {
-  try {
-    const client = new MongoClient(MONGO_URL);
-    await client.connect();
-    console.log("Connected to MongoDB");
-    return client;
-  } catch (error) {
-    console.error("Could not connect to MongoDB:", error);
-    process.exit(1);
-  }
-}
+const bikeRoutes = require("./routes/bikeRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 
-app.get("/", (req, res) => {
-  res.send(`Server running on port ${PORT}`);
+mongoose.connect(MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
+const db = mongoose.connection;
+
+db.on("error", (error) => {
+  console.error("MongoDB connection error:", error);
+});
+
+db.once("open", () => {
+  console.log("Connected to MongoDB");
+});
+
+app.use(express.json());
+
+// Use bike routes
+app.use(bikeRoutes);
+app.use(authRoutes);
+app.use(userRoutes);
+
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port`);
 });

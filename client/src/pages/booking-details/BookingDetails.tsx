@@ -38,7 +38,8 @@ const BookingDetails = () => {
           alignItems: "center",
           justifyContent: "center",
           flexDirection: "column",
-          height: "98vh",
+          height: "92vh",
+          marginTop: "7vh",
         }}
       >
         <div
@@ -53,8 +54,10 @@ const BookingDetails = () => {
           }}
         >
           <div>
-            <div>{bikeDetails?.regNum}</div>
-            <div>{bikeDetails?.name}</div>
+            <div>{bikeDetails?.licensePlate}</div>
+            <div>
+              {bikeDetails?.brand} {bikeDetails?.model}
+            </div>
           </div>
           <div>
             {bookingHours.from} to {bookingHours.to}
@@ -74,7 +77,7 @@ const BookingDetails = () => {
         <div style={{ width: "100%", height: "50%", background: "lawngreen" }}>
           <img
             style={{ width: "inherit", height: "100%" }}
-            src={bikeDetails?.imageUrl}
+            src={bikeDetails?.image}
             alt=""
           />
         </div>
@@ -98,7 +101,7 @@ const BookingDetails = () => {
             }}
           >
             <h2 style={{ color: "red" }}>
-              ₹ {(hours * 60 + minutes) * bikeDetails.ratePerMinute}
+              ₹ {(hours * 60 + minutes) * bikeDetails.pricePerMinute!}
             </h2>
             <span>
               for {hours} hours and {minutes} minutes

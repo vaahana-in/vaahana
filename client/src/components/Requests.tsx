@@ -3,6 +3,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
+import { CheckCircleOutline, ThumbDown } from "@mui/icons-material";
+import { Button } from "@material-ui/core";
 
 const Requests = () => {
   const persons = [
@@ -34,17 +36,43 @@ const Requests = () => {
   ];
 
   return (
-    <List>
-      {persons.map((person) => (
-        <ListItem key={person.id}>
-          <ListItemAvatar>
-            <Avatar alt={person.name} src={person.avatarUrl} />
-          </ListItemAvatar>
-          <ListItemText primary={person.name} secondary={person.address} />
-          <ListItemText primary={`${person.distance} m away`} />
-        </ListItem>
-      ))}
-    </List>
+    <>
+      <List>
+        {persons.map((person) => (
+          <ListItem
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              width: "100%",
+            }}
+            key={person.id}
+          >
+            <ListItemAvatar>
+              <Avatar alt={person.name} src={person.avatarUrl} />
+            </ListItemAvatar>
+            <ListItemText primary={person.name} secondary={person.address} />
+            <ListItemText primary={`${person.distance} m away`} />
+            <div>
+              <Button
+                style={{
+                  color: "green",
+                }}
+              >
+                <CheckCircleOutline />
+                <span style={{ color: "black", padding: "5px" }}>approve</span>
+              </Button>
+              <Button>
+                <ThumbDown color="warning" />
+                <span style={{ color: "black", padding: "5px" }}>deny</span>
+              </Button>
+            </div>
+          </ListItem>
+        ))}
+      </List>
+    </>
   );
 };
 

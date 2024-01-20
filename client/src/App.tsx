@@ -4,12 +4,18 @@ import Ride from "./pages/ride/Ride";
 import WalkRouteMap from "./components/WalkRouteMap";
 import BookingDetails from "./pages/booking-details/BookingDetails";
 import Lend from "./pages/Lend/Lend";
+import Register from "./pages/Register/Register";
+import Login from "./pages/Login/Login";
+import AppHeader from "./components/AppHeader";
 
 function App() {
   return (
     <>
+      <AppHeader />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Dashboard />} />
         <Route path="/ride" element={<Ride />} />
         <Route path="/lend" element={<Lend />} />
         <Route

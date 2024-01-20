@@ -7,14 +7,17 @@ import {
   InfoWindowF,
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
-import { Bike } from "../constants/bike.type";
+import { Bike, BikeResponse } from "../constants/bike.type";
 import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { calculateDistance } from "../utils/helpers";
+import { useAuthContext } from "../context/AuthContext";
 const Map = () => {
   const google = window.google;
   const navigate = useNavigate();
 
-  const { bikeData, selectBike } = useBikeContext();
+  const { selectBike } = useBikeContext();
 
   const handleBikeClick = (selectedBike: Bike) => {
     selectBike(selectedBike);
@@ -27,11 +30,40 @@ const Map = () => {
   } | null>(null);
 
   const [renderBikes, setRenderBikes] = useState(false);
+  const [bikes, setBikes] = useState(null);
+  const { authToken } = useAuthContext();
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         setCurrentLocation({ lat: latitude, lng: longitude });
+
+        authToken &&
+          axios
+            .get("http://localhost:3000/bike", {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            })
+            .then(async (bikesRes) => {
+              const bikesWithDistance = bikesRes.data.map(
+                (bike: BikeResponse) => {
+                  return {
+                    ...bike,
+                    distance: calculateDistance(
+                      { latitude, longitude },
+                      bike.location
+                    ),
+                    location: {
+                      lat: bike.location.latitude,
+                      lng: bike.location.longitude,
+                    },
+                  };
+                }
+              );
+
+              setBikes(bikesWithDistance);
+            });
 
         setTimeout(() => {
           setRenderBikes(true);
@@ -41,7 +73,7 @@ const Map = () => {
   }, [renderBikes]);
 
   const mapStyles = {
-    height: "500px",
+    height: "450px",
     width: "100%",
   };
 
@@ -51,7 +83,7 @@ const Map = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: "1vh",
+        marginTop: "7vh",
       }}
     >
       {currentLocation && (
@@ -79,10 +111,10 @@ const Map = () => {
                 visible: true,
               }}
             />
-            {bikeData &&
+            {bikes &&
               renderBikes &&
-              bikeData.map((bike: Bike, index: number) => {
-                if (bike?.coordinates) {
+              bikes.map((bike, index: number) => {
+                if (bike?.location) {
                   return (
                     <>
                       <MarkerF
@@ -91,10 +123,10 @@ const Map = () => {
                           scaledSize: new google.maps.Size(30, 30),
                         }}
                         key={index}
-                        position={bike?.coordinates}
+                        position={bike?.location}
                         onClick={() => handleBikeClick(bike)}
                       >
-                        <InfoWindowF position={bike?.coordinates}>
+                        <InfoWindowF position={bike?.location}>
                           <p style={{ padding: 0, margin: 0 }}>
                             {bike.distance} M
                           </p>
