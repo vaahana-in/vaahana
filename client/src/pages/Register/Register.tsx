@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TextField, Button, Container, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -12,18 +13,44 @@ function Register() {
     confirmPassword: "",
   });
 
+  const [errors, setErrors] = useState({});
+
+  const validatePasswords = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: "Passwords do not match",
+      }));
+    } else {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: "",
+      }));
+    }
+  };
+
   const handleChange =
     (field: string) => (event: { target: { value: unknown } }) => {
       setFormData((prevData) => ({
         ...prevData,
         [field]: event.target.value,
       }));
+
+      setErrors({ ...errors, [field]: "" });
     };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    // Add your registration logic here, e.g., send data to the server
-    console.log("Registration data:", formData);
+
+    validatePasswords();
+
+    axios
+      .post("http://localhost:3000/register", formData)
+      .then((registrationRes) => {
+        if (registrationRes.data.success) {
+          navigate("/login");
+        }
+      });
   };
 
   const navigate = useNavigate();
@@ -108,6 +135,12 @@ function Register() {
               required
             />
           </Grid>
+          <Grid style={{ justifyContent: "center" }}>
+            {errors.confirmPassword && (
+              <p style={{ color: "red" }}>{errors.confirmPassword}</p>
+            )}
+          </Grid>
+
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Register

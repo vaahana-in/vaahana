@@ -34,16 +34,17 @@ const AppHeader = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/user", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      })
-      .then((res) => {
-        setUsername(res.data[0].name);
-      });
-  }, [authToken, username]);
+    authToken &&
+      axios
+        .get("http://localhost:3000/user", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+        .then((res) => {
+          setUsername(res.data[0].name);
+        });
+  }, [authToken]);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 

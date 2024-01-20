@@ -24,11 +24,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Add your login logic here, e.g., send data to the server
-    console.log("Login data:", formData);
-
     const response = await axios.post("http://localhost:3000/login", formData);
-    console.log({ response });
     const token = response.data.token;
     setToken(token);
     navigate("/home");
