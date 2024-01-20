@@ -75,7 +75,8 @@ export default function Lend() {
                       />
                       <CardContent>
                         <Typography gutterBottom variant="h6" component="div">
-                          {bike.brand} {bike.model} {bike.makeYear}
+                          {bike.brand?.toUpperCase()}{" "}
+                          {bike.model?.toUpperCase()} {bike.makeYear}
                         </Typography>
                         <div
                           style={{

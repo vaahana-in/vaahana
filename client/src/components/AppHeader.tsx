@@ -65,7 +65,10 @@ const AppHeader = () => {
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <Typography variant="h6" onClick={() => navigate("/home")}>
+        <Typography
+          variant="h6"
+          onClick={() => (authToken ? navigate("/home") : navigate("/login"))}
+        >
           Vaahana
         </Typography>
         <div className={classes.grow} />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TextField, Button, Container, Typography, Grid } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -24,6 +25,8 @@ function Register() {
     // Add your registration logic here, e.g., send data to the server
     console.log("Registration data:", formData);
   };
+
+  const navigate = useNavigate();
 
   return (
     <Container
@@ -108,6 +111,15 @@ function Register() {
           <Grid item xs={12}>
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Register
+            </Button>
+            <Button
+              onClick={() => navigate("/login")}
+              variant="contained"
+              color="primary"
+              fullWidth
+              style={{ marginTop: "1vh" }}
+            >
+              Login
             </Button>
           </Grid>
         </Grid>

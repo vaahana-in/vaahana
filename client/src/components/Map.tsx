@@ -62,7 +62,7 @@ const Map = () => {
   }, [renderBikes]);
 
   const mapStyles = {
-    height: "500px",
+    height: "450px",
     width: "100%",
   };
 
@@ -72,7 +72,7 @@ const Map = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        marginTop: "1vh",
+        marginTop: "7vh",
       }}
     >
       {currentLocation && (

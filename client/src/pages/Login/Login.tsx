@@ -77,6 +77,15 @@ const Login = () => {
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Login
             </Button>
+            <Button
+              onClick={() => navigate("/register")}
+              variant="contained"
+              color="primary"
+              fullWidth
+              style={{ marginTop: "1vh" }}
+            >
+              Register
+            </Button>
           </Grid>
         </Grid>
       </form>

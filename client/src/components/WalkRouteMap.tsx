@@ -98,13 +98,20 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
             )}
           </GoogleMap>
         </LoadScript>
-
-        <Button
-          variant="contained"
-          style={{ background: "blue", color: "white" }}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          Start Navigation
-        </Button>
+          <Button
+            variant="contained"
+            style={{ background: "blue", color: "white" }}
+          >
+            Start Navigation
+          </Button>
+        </div>
       </Container>
 
       <Divider />

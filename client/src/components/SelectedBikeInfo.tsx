@@ -27,8 +27,12 @@ const SelectedBikeInfo = () => {
         <p style={{ margin: 0, padding: 0, fontWeight: "bold" }}>
           {bikeDetails?.licensePlate}
         </p>
-        <p style={{ margin: 0, padding: 0 }}>{bikeDetails.brand}</p>
-        <p style={{ margin: 0, padding: 0 }}>{bikeDetails?.model}</p>
+        <p style={{ margin: 0, padding: 0 }}>
+          {bikeDetails.brand?.toUpperCase()}
+        </p>
+        <p style={{ margin: 0, padding: 0 }}>
+          {bikeDetails?.model?.toUpperCase()}
+        </p>
       </div>
     )
   );

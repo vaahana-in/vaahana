@@ -33,7 +33,7 @@ const Ride = () => {
       <Box style={{ height: "55vh" }}>
         <Map />
       </Box>
-      <Box>
+      {/* <Box>
         <Typography variant="body1" align="center" color="initial">
           {" "}
           Bikes Near You
@@ -42,13 +42,13 @@ const Ride = () => {
           {" "}
           click to book
         </Typography>
-      </Box>
+      </Box> */}
       <Box style={{ height: "44vh", overflow: "scroll" }}>
         <List style={{ width: "100%" }}>
           {bikesRes &&
             bikesRes
               ?.sort((a, b) => a.distance! - b.distance!)
-              .map((bike: BikeResponse, index) => (
+              .map((bike: BikeResponse, index: number) => (
                 <Fragment key={index + 1}>
                   <Card>
                     <CardMedia
@@ -57,8 +57,14 @@ const Ride = () => {
                       title="green iguana"
                     />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {bike.brand} {bike.model} {bike.makeYear}
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        align="center"
+                        component="div"
+                      >
+                        {bike.brand?.toUpperCase()} {bike.model?.toUpperCase()}{" "}
+                        {bike.makeYear}
                         {/* <Typography
                           variant="body2"
                           style={{ color: "grey", float: "right" }}
@@ -66,9 +72,20 @@ const Ride = () => {
                           {bike.ownerName}
                         </Typography> */}
                       </Typography>
-                      <Typography variant="body1" style={{ color: "navy" }}>
-                        {bike.distance} m
-                      </Typography>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-around",
+                        }}
+                      >
+                        <Typography variant="body1" style={{ color: "navy" }}>
+                          {bike.distance} m
+                        </Typography>
+                        <Typography variant="body1" style={{ color: "navy" }}>
+                          ₹ {bike.pricePerMinute} per minute
+                        </Typography>
+                      </div>
                     </CardContent>
                   </Card>
                 </Fragment>
