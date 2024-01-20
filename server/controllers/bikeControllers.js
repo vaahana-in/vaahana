@@ -5,11 +5,20 @@ const Bike = require("../models/bike");
 // Create a bike
 exports.createBike = async (req, res) => {
   try {
-    const bike = new Bike(req.body);
+    const bike = new Bike({ ...req.body, ownerId: req.user.userId });
     await bike.save();
     res.status(201).json(bike);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+};
+
+exports.getBikesByOwner = async (req, res) => {
+  try {
+    const bikes = await Bike.find({ ownerId: req.user.userId });
+    res.json(bikes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
 

@@ -7,6 +7,7 @@ import {
 } from "react";
 import { Bike } from "../constants/bike.type";
 import axios from "axios";
+import { useAuthContext } from "./AuthContext";
 
 type BikeProviderComponentProps = {
   children: ReactNode;
@@ -33,12 +34,19 @@ const BikeProvider: React.FC<BikeProviderComponentProps> = ({ children }) => {
   const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
 
   const [bookingHours, setBookingHours] = useState<BookingHours | null>(null);
+  const { authToken } = useAuthContext();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/bike").then((bikesRes) => {
-      setBikeData(bikesRes.data);
-    });
-  }, [bikeData, selectedBike]);
+    axios
+      .get("http://localhost:3000/bike", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((bikesRes) => {
+        setBikeData(bikesRes.data);
+      });
+  }, []);
 
   const updateBikeData = (newBikeData: Bike[]) => {
     setBikeData(newBikeData);

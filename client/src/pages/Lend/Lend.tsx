@@ -40,13 +40,13 @@ export default function Lend() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/bike", {
+      .get("http://localhost:3000/bike/owner", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       })
       .then((res) => {
-        setYourBikes(res.data);
+        res.data && setYourBikes(res.data);
       });
   }, [authToken]);
 
@@ -64,7 +64,7 @@ export default function Lend() {
             style={{ width: "100%", overflow: "scroll", textAlign: "center" }}
           >
             <List style={{ width: "100%" }}>
-              {yourBikes &&
+              {yourBikes?.length > 0 ? (
                 yourBikes.map((bike: BikeResponse, index: number) => (
                   <React.Fragment key={index + 1}>
                     <Card>
@@ -98,7 +98,10 @@ export default function Lend() {
                       </CardContent>
                     </Card>
                   </React.Fragment>
-                ))}
+                ))
+              ) : (
+                <p>You have not added any bike</p>
+              )}
             </List>
           </Box>
           <Button onClick={handleDialogOpen} style={{ float: "right" }}>

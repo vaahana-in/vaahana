@@ -12,6 +12,7 @@ import { useBikeContext } from "../context/BikeContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { calculateDistance } from "../utils/helpers";
+import { useAuthContext } from "../context/AuthContext";
 const Map = () => {
   const google = window.google;
   const navigate = useNavigate();
@@ -30,29 +31,39 @@ const Map = () => {
 
   const [renderBikes, setRenderBikes] = useState(false);
   const [bikes, setBikes] = useState(null);
+  const { authToken } = useAuthContext();
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         setCurrentLocation({ lat: latitude, lng: longitude });
 
-        axios.get("http://localhost:3000/bike").then(async (bikesRes) => {
-          const bikesWithDistance = bikesRes.data.map((bike: BikeResponse) => {
-            return {
-              ...bike,
-              distance: calculateDistance(
-                { latitude, longitude },
-                bike.location
-              ),
-              location: {
-                lat: bike.location.latitude,
-                lng: bike.location.longitude,
+        authToken &&
+          axios
+            .get("http://localhost:3000/bike", {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
               },
-            };
-          });
+            })
+            .then(async (bikesRes) => {
+              const bikesWithDistance = bikesRes.data.map(
+                (bike: BikeResponse) => {
+                  return {
+                    ...bike,
+                    distance: calculateDistance(
+                      { latitude, longitude },
+                      bike.location
+                    ),
+                    location: {
+                      lat: bike.location.latitude,
+                      lng: bike.location.longitude,
+                    },
+                  };
+                }
+              );
 
-          setBikes(bikesWithDistance);
-        });
+              setBikes(bikesWithDistance);
+            });
 
         setTimeout(() => {
           setRenderBikes(true);

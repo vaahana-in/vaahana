@@ -114,7 +114,6 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
         </div>
       </Container>
 
-      <Divider />
       <Container
         style={{
           height: "25%",

@@ -19,7 +19,6 @@ function Dashboard() {
     <Container
       className="container"
       style={{
-        border: "1px dashed grey",
         padding: 0,
         display: "flex",
         alignItems: "center",
