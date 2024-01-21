@@ -20,7 +20,7 @@ jobs:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_DEV }}
 
   deploy-prod-vercel:
-    if: github.ref == 'refs/heads/dev'
+    if: github.ref == 'refs/heads/main'
     needs: deploy-prod-fly
     name: Deploy to Production Server on Vercel
     runs-on: ubuntu-latest
