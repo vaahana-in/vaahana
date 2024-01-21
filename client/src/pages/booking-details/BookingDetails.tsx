@@ -21,7 +21,7 @@ const BookingDetails = () => {
 
   const deleteRequest = (requestId: string) => {
     axios
-      .delete(`http://localhost:3000/request/${requestId}`, {
+      .delete(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/request/${requestId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -43,7 +43,7 @@ const BookingDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/request/rider`, {
+      .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/request/rider`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

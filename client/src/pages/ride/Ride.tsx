@@ -25,7 +25,7 @@ const Ride = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/request/rider", {
+      .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/request/rider`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -35,7 +35,7 @@ const Ride = () => {
           navigate("/booking-details");
         } else {
           axios
-            .get("http://localhost:3000/bike", {
+            .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/bike`, {
               headers: {
                 Authorization: `Bearer ${authToken}`,
               },

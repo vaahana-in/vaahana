@@ -52,11 +52,34 @@ The `docker-compose.yml` defines these services:
 - **Server**: The Node.js/Express backend.
 - **Client**: The React frontend, depending on the Server service.
 
+## Environment Variables
+
+The application uses environment variables for configuration. These are stored in `.env` files in the `client/` and `server/` directories.
+
+### Client
+
+The `client/` directory contains a `.env` file. Use the template at `.env.sample.client` to create your own `.env` file.
+
+### Server
+
+The `server/` directory contains a `.env` file. Use the template at `.env.sample.server` to create your own `.env` file.
+
+Remember to replace the placeholders in these `.env` files with your actual values. For security reasons, do not commit the `.env` files to your repository.
+
 ## Building and Running with Docker Compose
 
 1. **Build the Services**: Execute `docker-compose build`.
 2. **Run the Services**: Use `docker-compose up`. Use `-d` for detached mode.
 3. **Check the Containers**: Use `docker ps`.
+
+## Project Structure
+
+The project is divided into two main directories:
+
+- `client/`: Contains the frontend code of the application. Built with React and TypeScript.
+- `server/`: Contains the backend code of the application. Built with Express.js and Node.js.
+
+Each directory has its own Dockerfile for containerization and a package.json file for managing dependencies.
 
 ## Accessing the Application in the Browser
 
@@ -73,6 +96,7 @@ The `docker-compose.yml` defines these services:
 
 - **View Logs**: Use `docker-compose logs [service_name]`.
 - **Stopping Services**: Use `docker-compose down`.
+- **Traefik Dashboard**: Access the web interface at `http://localhost:8080`.
 
 ## Hot Reloading
 

@@ -36,7 +36,7 @@ const AppHeader = () => {
   useEffect(() => {
     authToken &&
       axios
-        .get("http://localhost:3000/user", {
+        .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/user`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },

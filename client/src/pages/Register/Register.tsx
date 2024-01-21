@@ -3,6 +3,8 @@ import { TextField, Button, Container, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+console.log(import.meta.env.VITE_APP_PUBLIC_SERVER_URL);
+
 function Register() {
   const [formData, setFormData] = useState({
     name: "",
@@ -45,7 +47,7 @@ function Register() {
     validatePasswords();
 
     axios
-      .post("http://localhost:3000/register", formData)
+      .post(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/register`, formData)
       .then((registrationRes) => {
         if (registrationRes.data.success) {
           navigate("/login");

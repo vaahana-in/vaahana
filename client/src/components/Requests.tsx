@@ -16,7 +16,7 @@ const Requests = () => {
 
   const getRequests = () => {
     axios
-      .get("http://localhost:3000/request/owner", {
+      .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/request/owner`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -29,7 +29,7 @@ const Requests = () => {
   const handleApproveClick = (requestId, approval) => {
     axios
       .patch(
-        `http://localhost:3000/request/${requestId}`,
+        `${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/request/${requestId}`,
         {
           approval,
         },
