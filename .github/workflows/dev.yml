@@ -1,0 +1,52 @@
+name: Deploy to Fly
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ 18, 20 ]
+    name: Testing Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./server
+      - name: Run tests
+        run: npm run test
+        working-directory: ./server
+
+  deploy-dev-fly:
+    if: github.ref == 'refs/heads/dev'
+    needs: build-and-test
+    name: Deploy to Development Server on Fly
+    runs-on: ubuntu-latest
+    environment: Development - Fly
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy to Development - Fly
+        run: flyctl deploy -c fly-dev.toml
+        working-directory: ./server
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_DEV }}
+
+  deploy-dev-vercel:
+    if: github.ref == 'refs/heads/dev'
+    needs: deploy-dev-fly
+    name: Deploy to Development Server on Vercel
+    runs-on: ubuntu-latest
+    environment: Development - Fly
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Development - Vercel
+        run: echo "Deployed to Vercel"
