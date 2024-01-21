@@ -1,25 +1,47 @@
 import { Button } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { useBikeContext } from "../../context/BikeContext";
-import { Bike } from "../../constants/bike.type";
 import moment from "moment";
+import axios from "axios";
+import { useAuthContext } from "../../context/AuthContext";
+import { Delete } from "@mui/icons-material";
 
 const BookingDetails = () => {
-  const handlePayClick = () => {};
+  const handlePayClick = () => {
+    console.log("handlePayClick clicked");
+  };
 
-  const { selectedBike, bookingHours } = useBikeContext();
+  const handleDeleteRequest = (requestId: string) => {
+    console.log({ requestId });
+  };
 
-  const [bikeDetails, setBikeDetails] = useState<Bike | null>(null);
+  const { authToken } = useAuthContext();
+
+  const [requestDetails, setRequestDetails] = useState(null);
+  const [hours, setHours] = useState(null);
+  const [minutes, setMinutes] = useState(null);
 
   useEffect(() => {
-    setBikeDetails(selectedBike);
-  }, [selectedBike]);
+    axios
+      .get(`http://localhost:3000/request/rider`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((requestRes) => {
+        if (requestRes.data) {
+          setRequestDetails(requestRes.data);
+          const { hours, minutes } = calculateTimeDifference(requestRes.data);
+          setHours(hours);
+          setMinutes(minutes);
+        }
+      });
+  }, []);
 
   const parseTime = (timeString: string) => moment(timeString, "h:mm A");
 
-  const calculateTimeDifference = () => {
-    const fromTime = parseTime(bookingHours.from);
-    const toTime = parseTime(bookingHours.to);
+  const calculateTimeDifference = (requestDetails) => {
+    const fromTime = parseTime(requestDetails.from);
+    const toTime = parseTime(requestDetails.to);
 
     if (fromTime.isValid() && toTime.isValid()) {
       const difference = moment.duration(toTime.diff(fromTime));
@@ -28,10 +50,9 @@ const BookingDetails = () => {
       return "Invalid time format";
     }
   };
-  const { hours, minutes } = calculateTimeDifference();
 
   return (
-    bikeDetails && (
+    requestDetails && (
       <div
         style={{
           display: "flex",
@@ -42,6 +63,8 @@ const BookingDetails = () => {
           marginTop: "7vh",
         }}
       >
+        <h3 style={{ marginTop: "3vh", marginBottom: 0 }}>Your Requests</h3>
+        <p>Delete current request to make new request</p>
         <div
           style={{
             display: "flex",
@@ -54,13 +77,13 @@ const BookingDetails = () => {
           }}
         >
           <div>
-            <div>{bikeDetails?.licensePlate}</div>
+            <div>{requestDetails.bikeId?.licensePlate}</div>
             <div>
-              {bikeDetails?.brand} {bikeDetails?.model}
+              {requestDetails.bikeId?.brand} {requestDetails.bikeId?.model}
             </div>
           </div>
           <div>
-            {bookingHours.from} to {bookingHours.to}
+            {requestDetails.from} to {requestDetails.to}
           </div>
           <div
             style={{
@@ -71,13 +94,15 @@ const BookingDetails = () => {
             }}
           >
             <div>Owner Approval</div>
-            <div>✅</div>
+            {requestDetails && (
+              <div>{requestDetails.approval ? "✅" : "Pending"}</div>
+            )}
           </div>
         </div>
         <div style={{ width: "100%", height: "50%", background: "lawngreen" }}>
           <img
             style={{ width: "inherit", height: "100%" }}
-            src={bikeDetails?.image}
+            src={requestDetails.bikeId?.image}
             alt=""
           />
         </div>
@@ -101,7 +126,7 @@ const BookingDetails = () => {
             }}
           >
             <h2 style={{ color: "red" }}>
-              ₹ {(hours * 60 + minutes) * bikeDetails.pricePerMinute!}
+              ₹ {(hours * 60 + minutes) * requestDetails.bikeId.pricePerMinute!}
             </h2>
             <span>
               for {hours} hours and {minutes} minutes
@@ -110,12 +135,21 @@ const BookingDetails = () => {
 
           <Button
             variant="contained"
-            style={{ background: "blue", color: "white", margin: 20 }}
+            style={{ color: "black", margin: 20 }}
             onClick={handlePayClick}
+            disabled={!requestDetails.approval}
           >
             Make Payment
           </Button>
         </div>
+        <Button
+          variant="contained"
+          style={{ color: "black", margin: 20 }}
+          onClick={() => handleDeleteRequest(requestDetails._id)}
+          disabled={!requestDetails.approval}
+        >
+          <Delete />
+        </Button>
       </div>
     )
   );
