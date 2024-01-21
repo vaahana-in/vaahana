@@ -4,7 +4,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import { CheckCircleOutline, ThumbDown } from "@mui/icons-material";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress, Divider } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
@@ -14,7 +14,7 @@ const Requests = () => {
 
   const [requests, setRequests] = useState(null);
 
-  useEffect(() => {
+  const getRequests = () => {
     axios
       .get("http://localhost:3000/request/owner", {
         headers: {
@@ -24,6 +24,30 @@ const Requests = () => {
       .then((res) => {
         setRequests(res.data);
       });
+  };
+
+  const handleApproveClick = (requestId, approval) => {
+    axios
+      .patch(
+        `http://localhost:3000/request/${requestId}`,
+        {
+          approval,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data) {
+          getRequests();
+        }
+      });
+  };
+
+  useEffect(() => {
+    getRequests();
   }, []);
 
   return (
@@ -32,56 +56,75 @@ const Requests = () => {
         <List>
           {requests.length > 0 ? (
             requests.map((req) => (
-              <ListItem
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  width: "100%",
-                }}
-                key={req._id}
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    alt={req.requesterId.name}
-                    src={
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU"
-                    }
-                  />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={req.requesterId.name}
-                  secondary={req.requesterId.address}
-                />
-                <ListItemText primary={`100 m away`} />
-                <div
+              <div>
+                <ListItem
                   style={{
                     display: "flex",
+                    flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "space-around",
-                    flexDirection: "row",
+                    justifyContent: "center",
+                    textAlign: "center",
                     width: "100%",
                   }}
+                  key={req._id}
                 >
-                  <Button
-                    style={{
-                      color: "green",
-                    }}
-                    variant="contained"
-                  >
-                    <CheckCircleOutline />
-                    <span style={{ color: "black", padding: "5px" }}>
-                      approve
-                    </span>
-                  </Button>
-                  <Button variant="contained">
-                    <ThumbDown color="warning" />
-                    <span style={{ color: "black", padding: "5px" }}>deny</span>
-                  </Button>
-                </div>
-              </ListItem>
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={req.requesterId.name}
+                      src={
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU"
+                      }
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={req.requesterId.name}
+                    secondary={req.requesterId.address}
+                  />
+                  <ListItemText primary={`100 m away`} />
+                  {req.approval === "pending" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-around",
+                        flexDirection: "row",
+                        width: "100%",
+                      }}
+                    >
+                      <Button
+                        style={{
+                          color: "green",
+                        }}
+                        variant="contained"
+                        onClick={() => handleApproveClick(req._id, "approved")}
+                      >
+                        <CheckCircleOutline />
+                        <span style={{ color: "black", padding: "5px" }}>
+                          approve
+                        </span>
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleApproveClick(req._id, "denied")}
+                      >
+                        <ThumbDown color="warning" />
+                        <span style={{ color: "black", padding: "5px" }}>
+                          deny
+                        </span>
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      {req.approval === "approved" ? (
+                        <span>✅ approved</span>
+                      ) : (
+                        <span>👎 denied</span>
+                      )}
+                    </div>
+                  )}
+                </ListItem>
+                <Divider />
+              </div>
             ))
           ) : (
             <div
