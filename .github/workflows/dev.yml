@@ -18,7 +18,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - run: npm test
+      - name: Move to server directory
+        run: cd server
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test
 
   deploy-dev:
     if: github.ref == 'refs/heads/dev'
