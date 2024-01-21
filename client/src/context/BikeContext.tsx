@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Bike } from "../constants/bike.type";
+import { BikeResponse } from "../constants/bike.type";
 import axios from "axios";
 import { useAuthContext } from "./AuthContext";
 
@@ -19,10 +19,10 @@ export type BookingHours = {
 };
 
 export type BikeContextType = {
-  bikeData: Bike[] | null;
-  updateBikeData: (newBikeData: Bike[]) => void;
-  selectedBike: Bike | null;
-  selectBike: (bike: Bike) => void;
+  bikeData: BikeResponse[] | null;
+  updateBikeData: (newBikeData: BikeResponse[]) => void;
+  selectedBike: BikeResponse | null;
+  selectBike: (bike: BikeResponse) => void;
   bookingHours: BookingHours | null;
   setBookingHours: (bookingHours: BookingHours) => void;
 };
@@ -30,8 +30,8 @@ export type BikeContextType = {
 const BikeContext = createContext<BikeContextType | null>(null);
 
 const BikeProvider: React.FC<BikeProviderComponentProps> = ({ children }) => {
-  const [bikeData, setBikeData] = useState<Bike[] | null>(null);
-  const [selectedBike, setSelectedBike] = useState<Bike | null>(null);
+  const [bikeData, setBikeData] = useState<BikeResponse[] | null>(null);
+  const [selectedBike, setSelectedBike] = useState<BikeResponse | null>(null);
 
   const [bookingHours, setBookingHours] = useState<BookingHours | null>(null);
   const { authToken } = useAuthContext();
@@ -48,11 +48,11 @@ const BikeProvider: React.FC<BikeProviderComponentProps> = ({ children }) => {
       });
   }, []);
 
-  const updateBikeData = (newBikeData: Bike[]) => {
+  const updateBikeData = (newBikeData: BikeResponse[]) => {
     setBikeData(newBikeData);
   };
 
-  const selectBike = (bike: Bike) => {
+  const selectBike = (bike: BikeResponse) => {
     setSelectedBike(bike);
   };
 
