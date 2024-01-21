@@ -16,7 +16,7 @@ const requestSchema = new mongoose.Schema(
     },
     from: String,
     to: String,
-    approval: { type: Boolean, default: false },
+    approval: { type: String, default: "pending" },
   },
   { timestamps: true }
 );

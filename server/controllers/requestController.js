@@ -79,9 +79,13 @@ exports.getRequestById = async (req, res) => {
 
 exports.updateRequestById = async (req, res) => {
   try {
-    const request = await Request.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const request = await Request.findByIdAndUpdate(
+      { _id: req.params.id },
+      { approval: req.body.approval },
+      {
+        new: true,
+      }
+    );
     if (request) {
       res.json(request);
     } else {
@@ -96,7 +100,7 @@ exports.deleteRequestById = async (req, res) => {
   try {
     const request = await Request.findByIdAndDelete(req.params.id);
     if (request) {
-      res.json({ message: "Request deleted" });
+      res.json({ message: "Request deleted", success: true });
     } else {
       res.status(404).json({ message: "Request not found" });
     }
