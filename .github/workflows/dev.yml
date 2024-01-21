@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         node: [ 18, 20 ]
-    name: Node ${{ matrix.node }} sample
+    name: Testing Node ${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup node
@@ -25,10 +25,10 @@ jobs:
         run: npm run test
         working-directory: ./server
 
-  deploy-dev:
+  deploy-dev-fly:
     if: github.ref == 'refs/heads/dev'
     needs: build-and-test
-    name: Deploy to Development
+    name: Deploy to Development Server on Fly
     runs-on: ubuntu-latest
     environment: Development - Fly
     steps:
@@ -39,3 +39,14 @@ jobs:
         working-directory: ./server
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_DEV }}
+
+  deploy-dev-vercel:
+    if: github.ref == 'refs/heads/dev'
+    needs: deploy-dev-fly
+    name: Deploy to Development Server on Vercel
+    runs-on: ubuntu-latest
+    environment: Development - Fly
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Development - Vercel
+        run: echo "Deployed to Vercel"
