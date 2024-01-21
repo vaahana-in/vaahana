@@ -1,7 +1,9 @@
 import { Container } from "@material-ui/core";
 // import Ride from '../ride/Ride'
 import "./Dashboard.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthContext } from "../../context/AuthContext";
 
 const buttonStyle = {
   display: "inline-block",
@@ -15,6 +17,15 @@ const buttonStyle = {
 };
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const { authToken } = useAuthContext();
+
+  useEffect(() => {
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, [authToken]);
+
   return (
     <Container
       className="container"

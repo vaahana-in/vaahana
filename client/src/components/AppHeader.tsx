@@ -68,7 +68,7 @@ const AppHeader = () => {
       <Toolbar>
         <Typography
           variant="h6"
-          onClick={() => (authToken ? navigate("/home") : navigate("/login"))}
+          onClick={() => (authToken ? navigate("/") : navigate("/login"))}
         >
           Vaahana
         </Typography>

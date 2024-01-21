@@ -27,7 +27,7 @@ const Login = () => {
     const response = await axios.post("http://localhost:3000/login", formData);
     const token = response.data.token;
     setToken(token);
-    navigate("/home");
+    navigate("/");
   };
 
   return (
