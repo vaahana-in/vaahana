@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CircularProgress,
   List,
   Typography,
 } from "@material-ui/core";
@@ -63,46 +64,60 @@ export default function Lend() {
           <Box
             style={{ width: "100%", overflow: "scroll", textAlign: "center" }}
           >
-            <List style={{ width: "100%" }}>
-              {yourBikes?.length > 0 ? (
-                yourBikes.map((bike: BikeResponse, index: number) => (
-                  <React.Fragment key={index + 1}>
-                    <Card>
-                      <CardMedia
-                        style={{ height: 180 }}
-                        image={bike.image}
-                        title="green iguana"
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="h6" component="div">
-                          {bike.brand?.toUpperCase()}{" "}
-                          {bike.model?.toUpperCase()} {bike.makeYear}
-                        </Typography>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-around",
-                          }}
-                        >
-                          <Button>
-                            <History />
-                          </Button>
-                          <Button>
-                            <Delete />
-                          </Button>
-                          <Button>
-                            <Edit />
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </React.Fragment>
-                ))
-              ) : (
-                <p>You have not added any bike</p>
-              )}
-            </List>
+            {yourBikes ? (
+              <List style={{ width: "100%" }}>
+                {yourBikes?.length > 0 ? (
+                  yourBikes.map((bike: BikeResponse, index: number) => (
+                    <React.Fragment key={index + 1}>
+                      <Card>
+                        <CardMedia
+                          style={{ height: 180 }}
+                          image={bike.image}
+                          title="green iguana"
+                        />
+                        <CardContent>
+                          <Typography gutterBottom variant="h6" component="div">
+                            {bike.brand?.toUpperCase()}{" "}
+                            {bike.model?.toUpperCase()} {bike.makeYear}
+                          </Typography>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-around",
+                            }}
+                          >
+                            <Button>
+                              <History />
+                            </Button>
+                            <Button>
+                              <Delete />
+                            </Button>
+                            <Button>
+                              <Edit />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </React.Fragment>
+                  ))
+                ) : (
+                  <p>You have not added any bike</p>
+                )}
+              </List>
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "50vh",
+                }}
+              >
+                <CircularProgress />
+              </div>
+            )}
           </Box>
           <Button onClick={handleDialogOpen} style={{ float: "right" }}>
             <LibraryAdd fontSize="large" />

@@ -4,74 +4,112 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import { CheckCircleOutline, ThumbDown } from "@mui/icons-material";
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useAuthContext } from "../context/AuthContext";
 
 const Requests = () => {
-  const persons = [
-    {
-      id: 1,
-      name: "Ramanna",
-      address: "Rajajinagara",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU", // Replace with actual image URL
-      distance: 500,
-    },
-    {
-      id: 2,
-      name: "Channappa",
-      address: "Srirampura",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU",
-      distance: 300,
-    },
-    {
-      id: 3,
-      name: "Basanni",
-      address: "Bommasandra",
-      avatarUrl:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU",
-      distance: 700,
-    },
-    // Add more persons as needed
-  ];
+  const { authToken } = useAuthContext();
+
+  const [requests, setRequests] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/request/owner", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((res) => {
+        setRequests(res.data);
+      });
+  }, []);
 
   return (
     <>
-      <List>
-        {persons.map((person) => (
-          <ListItem
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-              width: "100%",
-            }}
-            key={person.id}
-          >
-            <ListItemAvatar>
-              <Avatar alt={person.name} src={person.avatarUrl} />
-            </ListItemAvatar>
-            <ListItemText primary={person.name} secondary={person.address} />
-            <ListItemText primary={`${person.distance} m away`} />
-            <div>
-              <Button
+      {requests ? (
+        <List>
+          {requests.length > 0 ? (
+            requests.map((req) => (
+              <ListItem
                 style={{
-                  color: "green",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  width: "100%",
                 }}
+                key={req._id}
               >
-                <CheckCircleOutline />
-                <span style={{ color: "black", padding: "5px" }}>approve</span>
-              </Button>
-              <Button>
-                <ThumbDown color="warning" />
-                <span style={{ color: "black", padding: "5px" }}>deny</span>
-              </Button>
+                <ListItemAvatar>
+                  <Avatar
+                    alt={req.requesterId.name}
+                    src={
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSb9JsqxOgGFNVVKBMVmeCoU-G1W-rWUcb057f6NERgAYHHaJ8BknDGWXNyScS6v969bq0&usqp=CAU"
+                    }
+                  />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={req.requesterId.name}
+                  secondary={req.requesterId.address}
+                />
+                <ListItemText primary={`100 m away`} />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-around",
+                    flexDirection: "row",
+                    width: "100%",
+                  }}
+                >
+                  <Button
+                    style={{
+                      color: "green",
+                    }}
+                    variant="contained"
+                  >
+                    <CheckCircleOutline />
+                    <span style={{ color: "black", padding: "5px" }}>
+                      approve
+                    </span>
+                  </Button>
+                  <Button variant="contained">
+                    <ThumbDown color="warning" />
+                    <span style={{ color: "black", padding: "5px" }}>deny</span>
+                  </Button>
+                </div>
+              </ListItem>
+            ))
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "50vh",
+              }}
+            >
+              <p>No requests found</p>
             </div>
-          </ListItem>
-        ))}
-      </List>
+          )}
+        </List>
+      ) : (
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "50vh",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      )}
     </>
   );
 };

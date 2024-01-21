@@ -6,7 +6,14 @@ const requestSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bike",
     },
-    requesterId: String,
+    requesterId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     from: String,
     to: String,
     approval: { type: Boolean, default: false },

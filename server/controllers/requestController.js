@@ -2,9 +2,11 @@ const Request = require("../models/request");
 
 exports.createRequest = async (req, res) => {
   try {
-    const existingRequest = Request.findOne({ requesterId: req.user.userId });
-    if (reqExists) {
-      res.json({ message: "Request exists", existingRequest });
+    const existingRequest = await Request.findOne({
+      requesterId: req.user.userId,
+    });
+    if (existingRequest) {
+      res.json({ message: "Request exists" });
     } else {
       const request = new Request({
         ...req.body,
@@ -20,7 +22,9 @@ exports.createRequest = async (req, res) => {
 
 exports.getRequestsByOwner = async (req, res) => {
   try {
-    const requests = await Request.find({ ownerId: req.user.userId });
+    const requests = await Request.find({ ownerId: req.user.userId }).populate(
+      "requesterId"
+    );
     res.json(requests);
   } catch (error) {
     res.status(500).json({ error: error.message });
