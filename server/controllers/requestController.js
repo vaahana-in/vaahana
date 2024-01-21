@@ -2,9 +2,11 @@ const Request = require("../models/request");
 
 exports.createRequest = async (req, res) => {
   try {
-    const existingRequest = Request.findOne({ requesterId: req.user.userId });
-    if (reqExists) {
-      res.json({ message: "Request exists", existingRequest });
+    const existingRequest = await Request.findOne({
+      requesterId: req.user.userId,
+    });
+    if (existingRequest) {
+      res.json({ message: "Request exists" });
     } else {
       const request = new Request({
         ...req.body,
@@ -20,7 +22,9 @@ exports.createRequest = async (req, res) => {
 
 exports.getRequestsByOwner = async (req, res) => {
   try {
-    const requests = await Request.find({ ownerId: req.user.userId });
+    const requests = await Request.find({ ownerId: req.user.userId }).populate(
+      "requesterId"
+    );
     res.json(requests);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -75,9 +79,13 @@ exports.getRequestById = async (req, res) => {
 
 exports.updateRequestById = async (req, res) => {
   try {
-    const request = await Request.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const request = await Request.findByIdAndUpdate(
+      { _id: req.params.id },
+      { approval: req.body.approval },
+      {
+        new: true,
+      }
+    );
     if (request) {
       res.json(request);
     } else {
@@ -92,7 +100,7 @@ exports.deleteRequestById = async (req, res) => {
   try {
     const request = await Request.findByIdAndDelete(req.params.id);
     if (request) {
-      res.json({ message: "Request deleted" });
+      res.json({ message: "Request deleted", success: true });
     } else {
       res.status(404).json({ message: "Request not found" });
     }

@@ -17,6 +17,7 @@ const RequestApproval = () => {
           bikeId: selectedBike._id,
           from: bookingHours.from,
           to: bookingHours.to,
+          ownerId: selectedBike.ownerId,
         },
         {
           headers: {

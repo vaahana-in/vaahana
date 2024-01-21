@@ -4,14 +4,11 @@ import moment from "moment";
 import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
 import { Delete } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 const BookingDetails = () => {
   const handlePayClick = () => {
     console.log("handlePayClick clicked");
-  };
-
-  const handleDeleteRequest = (requestId: string) => {
-    console.log({ requestId });
   };
 
   const { authToken } = useAuthContext();
@@ -19,6 +16,30 @@ const BookingDetails = () => {
   const [requestDetails, setRequestDetails] = useState(null);
   const [hours, setHours] = useState(null);
   const [minutes, setMinutes] = useState(null);
+
+  const navigate = useNavigate();
+
+  const deleteRequest = (requestId: string) => {
+    axios
+      .delete(`http://localhost:3000/request/${requestId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.success) {
+          navigate("/ride");
+        }
+      });
+  };
+
+  const handleViewOtherBikes = (requestId: string) => {
+    deleteRequest(requestId);
+  };
+
+  const handleDeleteRequest = (requestId: string) => {
+    deleteRequest(requestId);
+  };
 
   useEffect(() => {
     axios
@@ -95,7 +116,13 @@ const BookingDetails = () => {
           >
             <div>Owner Approval</div>
             {requestDetails && (
-              <div>{requestDetails.approval ? "✅" : "Pending"}</div>
+              <div>
+                {requestDetails.approval === "pending"
+                  ? "Pending"
+                  : requestDetails.approval === "approved"
+                  ? "✅"
+                  : "👎"}
+              </div>
             )}
           </div>
         </div>
@@ -137,10 +164,22 @@ const BookingDetails = () => {
             variant="contained"
             style={{ color: "black", margin: 20 }}
             onClick={handlePayClick}
-            disabled={!requestDetails.approval}
+            disabled={
+              requestDetails.approval === "denied" ||
+              requestDetails.approval === "pending"
+            }
           >
             Make Payment
           </Button>
+          {requestDetails.approval === "denied" && (
+            <Button
+              variant="contained"
+              style={{ color: "black", margin: 20 }}
+              onClick={() => handleViewOtherBikes(requestDetails._id)}
+            >
+              View other bikes
+            </Button>
+          )}
         </div>
         <Button
           variant="contained"
