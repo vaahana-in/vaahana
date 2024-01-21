@@ -6,7 +6,7 @@ import {
   MarkerF,
 } from "@react-google-maps/api";
 import logo from "../assets/motorbike.png";
-import { Button, Container, Divider } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 import { useBikeContext } from "../context/BikeContext";
 import SelectTime from "./SelectTime";
 import SelectedBikeInfo from "./SelectedBikeInfo";

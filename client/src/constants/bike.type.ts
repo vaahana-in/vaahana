@@ -31,6 +31,7 @@ export interface Bike {
 }
 
 export interface BikeResponse extends Bike {
+  _id: string;
   ownerId: string; // ID of the owner/user who listed the motorbike
   color: string;
   description: string;
