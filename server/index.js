@@ -4,8 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.SERVER_PORT || 3000;
-const MONGO_URL = process.env.MONGO_URL;
+const PORT = process.env.SERVER_PORT;
 app.use(cors());
 
 const bikeRoutes = require("./routes/bikeRoutes");
@@ -13,10 +12,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const requestRoutes = require("./routes/requestRoutes");
 
-mongoose.connect(MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.VAAHANA_MONGO_URL_LOCAL);
 
 const db = mongoose.connection;
 
@@ -30,6 +26,10 @@ db.once("open", () => {
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({ message: "Hello World" });
+});
+
 // Use bike routes
 app.use(bikeRoutes);
 app.use(authRoutes);
@@ -38,5 +38,5 @@ app.use(requestRoutes);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port`);
+  console.log(`Server is running on port: ${PORT}`);
 });

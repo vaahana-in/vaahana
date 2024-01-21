@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.post("http://localhost:3000/login", formData);
+    const response = await axios.post(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/login`, formData);
     const token = response.data.token;
     setToken(token);
     navigate("/");

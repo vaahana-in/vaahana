@@ -70,7 +70,7 @@ const AddBike = ({ open, onClose }) => {
   };
 
   const handleSave = async () => {
-    await axios.post(`http://localhost:3000/bike`, formData, {
+    await axios.post(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/bike`, formData, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },

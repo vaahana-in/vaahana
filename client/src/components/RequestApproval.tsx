@@ -12,7 +12,7 @@ const RequestApproval = () => {
   const handleRequestApproval = () => {
     axios
       .post(
-        "http://localhost:3000/request",
+        `${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/request`,
         {
           bikeId: selectedBike._id,
           from: bookingHours.from,
