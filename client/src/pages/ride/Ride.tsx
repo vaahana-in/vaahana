@@ -15,25 +15,43 @@ import Map from "../../components/Map";
 import axios from "axios";
 import { calculateDistance, getCurrentLocation } from "../../utils/helpers";
 import { useAuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Ride = () => {
   const [bikesRes, setBikesRes] = useState(null);
   const { authToken } = useAuthContext();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     axios
-      .get("http://localhost:3000/bike", {
+      .get("http://localhost:3000/request/rider", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       })
-      .then(async (bikesRes) => {
-        const currentLocation = await getCurrentLocation();
-        const bikesWithDistance = bikesRes.data.map((bike) => {
-          bike.distance = calculateDistance(currentLocation, bike.location);
-          return bike;
-        });
-        setBikesRes(bikesWithDistance);
+      .then((res) => {
+        if (res.data) {
+          navigate("/booking-details");
+        } else {
+          axios
+            .get("http://localhost:3000/bike", {
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+            })
+            .then(async (bikesRes) => {
+              const currentLocation = await getCurrentLocation();
+              const bikesWithDistance = bikesRes.data.map((bike) => {
+                bike.distance = calculateDistance(
+                  currentLocation,
+                  bike.location
+                );
+                return bike;
+              });
+              setBikesRes(bikesWithDistance);
+            });
+        }
       });
   }, []);
 
