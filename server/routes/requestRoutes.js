@@ -33,7 +33,7 @@ router.patch(
 
 // Delete a bike by ID
 router.delete(
-  "/bike/:id",
+  "/request/:id",
   authenticateToken,
   requestController.deleteRequestById
 );
