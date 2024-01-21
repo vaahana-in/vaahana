@@ -11,6 +11,7 @@ app.use(cors());
 const bikeRoutes = require("./routes/bikeRoutes");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const requestRoutes = require("./routes/requestRoutes");
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use(bikeRoutes);
 app.use(authRoutes);
 app.use(userRoutes);
+app.use(requestRoutes);
 
 // Start the server
 app.listen(PORT, () => {
