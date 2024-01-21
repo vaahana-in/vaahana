@@ -5,6 +5,7 @@
 Welcome to **Vaahana**, the Airbnb for motorbikes. Whether you want to list your idle bike to earn money or need a ride and wish to rent one, Vaahana is your platform.
 
 ## Authors
+
 - [Shreedhar Hegde](https://www.linkedin.com/in/shreedhar-hegde/)
 - [Shreekar Hegde](https://www.linkedin.com/in/shreekar-hegde/)
 - [Sudhanva Narayana](https://linkedin.com/in/nsudhanva/)
@@ -12,11 +13,13 @@ Welcome to **Vaahana**, the Airbnb for motorbikes. Whether you want to list your
 ## How It Works
 
 ### For Bike Owners (Hosts)
+
 - **List Your Bike**
 - **Receive Requests**
 - **Earn Money**
 
 ### For Riders (Guests)
+
 - **Find a Bike**
 - **Book It**
 - **Ride and Return**
@@ -104,3 +107,14 @@ Supports hot reloading for client and server code updates.
 - **Container Crashes**: Check logs for errors.
 - **Network Issues**: Check for port or URL conflicts.
 - **Docker Daemon**: Ensure it's active.
+
+# Running locally
+
+- Create .env file under client
+- Add VITE_GOOGLE_MAPS_API_KEY to it
+- Create .env file under server
+- Add MONGO_URL, APP_SECRET to it
+- cd into client and run npm install
+- npm run dev
+- cd into server and run npm install
+- npm run dev
