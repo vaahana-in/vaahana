@@ -12,6 +12,7 @@ import SelectTime from "./SelectTime";
 import SelectedBikeInfo from "./SelectedBikeInfo";
 import CallOwner from "./CallOwner";
 import RequestApproval from "./RequestApproval";
+import "./WalkRouteMap.css";
 
 type WalkRouteMapComponentProps = {
   userLocation: { lat: number; lng: number };
@@ -50,17 +51,8 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
   }, [userLocation, selectedBike]);
 
   return (
-    <Container
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: 0,
-        height: "98vh",
-      }}
-    >
-      <Container
-        style={{ height: "100%", width: "100%", margin: 0, padding: 0 }}
-      >
+    <div className="walkRouteMapContainer">
+      <div className="walkRouteMapMapContainer">
         <LoadScript
           googleMapsApiKey={`${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
         >
@@ -107,49 +99,49 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
         >
           <Button
             variant="contained"
-            style={{ background: "blue", color: "white" }}
+            style={{ marginTop: "2vh", background: "blue", color: "white" }}
           >
             Start Navigation
           </Button>
         </div>
-      </Container>
+      </div>
 
-      <Container
-        style={{
-          height: "25%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
-        <div
+      <div className="walkRouteMapBookingContainer">
+        <Container
           style={{
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
             justifyContent: "space-between",
-            marginTop: "10px",
+            width: "100%",
           }}
         >
-          <label>Select Time</label>
-          <SelectTime />
-        </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: "10px",
+            }}
+          >
+            <label>Select Time</label>
+            <SelectTime />
+          </div>
 
-        <SelectedBikeInfo />
-      </Container>
-      <Container
-        style={{
-          height: "25%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CallOwner />
-        <RequestApproval />
-      </Container>
-    </Container>
+          <SelectedBikeInfo />
+        </Container>
+        <Container
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CallOwner />
+          <RequestApproval />
+        </Container>
+      </div>
+    </div>
   );
 };
 
