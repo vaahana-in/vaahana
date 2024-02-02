@@ -14,6 +14,7 @@ import axios from "axios";
 import { calculateDistance, getCurrentLocation } from "../../utils/helpers";
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import "./Ride.css";
 
 const Ride = () => {
   const [bikesRes, setBikesRes] = useState(null);
@@ -51,52 +52,50 @@ const Ride = () => {
             });
         }
       });
-  }, []);
+  }, [authToken, navigate]);
 
   return (
     <Container>
       <div className="container">
-        <div className="mapContainer">
-          <Map />
+        <div style={{ width: "90vw" }}>
+          <Map key={`xyz`} />
         </div>
         {bikesRes ? (
           <Box className="bikesContainer">
-            <List style={{ width: "100%" }}>
-              {bikesRes
-                ?.sort((a, b) => a.distance! - b.distance!)
-                .map((bike) => (
-                  <div className="bikeCard">
-                    <Card key={bike.id} elevation={3}>
-                      <CardContent>
+            {bikesRes
+              ?.sort((a, b) => a.distance! - b.distance!)
+              .map((bike, index) => (
+                <div className="bikeCard" key={`x-${index}`}>
+                  <Card elevation={3}>
+                    <CardContent>
+                      <div>
                         <div>
-                          <div>
-                            <Typography variant="h6" component="div">
-                              {bike.brand} {bike.model}
-                            </Typography>
-                            <Typography variant="body2">
-                              {bike.licensePlate}
-                            </Typography>
-                            <Typography variant="body2">
-                              {bike.pricePerMinute}
-                            </Typography>
-                          </div>
-                          <div>
-                            <img
-                              style={{
-                                float: "right",
-                                width: "100%",
-                                maxWidth: "300px",
-                                height: "auto",
-                              }}
-                              src={bike.image}
-                            />
-                          </div>
+                          <Typography variant="h6" component="div">
+                            {bike.brand} {bike.model}
+                          </Typography>
+                          <Typography variant="body2">
+                            {bike.licensePlate}
+                          </Typography>
+                          <Typography variant="body2">
+                            {bike.pricePerMinute}
+                          </Typography>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ))}
-            </List>
+                        <div>
+                          <img
+                            style={{
+                              float: "right",
+                              width: "100%",
+                              maxWidth: "300px",
+                              height: "auto",
+                            }}
+                            src={bike.image}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
           </Box>
         ) : (
           <CircularProgress />
