@@ -70,22 +70,15 @@ const Map = () => {
         }, 1000);
       });
     }
-  }, [renderBikes]);
+  }, [renderBikes, authToken]);
 
   const mapStyles = {
-    height: "450px",
+    height: "50vh",
     width: "100%",
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: "7vh",
-      }}
-    >
+    <div>
       {currentLocation && (
         <LoadScript
           googleMapsApiKey={`${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`}
@@ -113,16 +106,16 @@ const Map = () => {
             />
             {bikes &&
               renderBikes &&
-              bikes.map((bike, index: number) => {
+              bikes.map((bike, index) => {
                 if (bike?.location) {
                   return (
                     <>
                       <MarkerF
+                        key={index}
                         icon={{
                           url: logo,
                           scaledSize: new google.maps.Size(30, 30),
                         }}
-                        key={index}
                         position={bike?.location}
                         onClick={() => handleBikeClick(bike)}
                       >
