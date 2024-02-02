@@ -7,6 +7,7 @@ import Lend from "./pages/Lend/Lend";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 import AppHeader from "./components/AppHeader";
+import Test from "./components/Test";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/ride" element={<Ride />} />
         <Route path="/lend" element={<Lend />} />
+        <Route path="/test" element={<Test />} />
         <Route
           path="/walk"
           element={

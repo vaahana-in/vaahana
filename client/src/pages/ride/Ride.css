@@ -1,0 +1,48 @@
+@media screen and (min-width: 100px) and (max-width: 600px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .mapContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    max-width: 90vw;
+    display: "flex";
+  }
+  .bikesContainer {
+    overflow: scroll;
+    height: 50%;
+  }
+  .bikeCard {
+    padding: 5px;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10vh;
+    height: 85vh;
+  }
+  .mapContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70%;
+    max-width: 50vw;
+    display: "flex";
+  }
+  .bikesContainer {
+    overflow: scroll;
+    height: 100%;
+  }
+  .bikeCard {
+    padding: 5px;
+  }
+}

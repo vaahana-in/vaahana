@@ -4,12 +4,10 @@ import {
   List,
   Typography,
   CardContent,
-  CardMedia,
   Card,
   CircularProgress,
 } from "@material-ui/core";
-import { Fragment, useEffect, useState } from "react";
-import { BikeResponse } from "../../constants/bike.type";
+import { useEffect, useState } from "react";
 
 import Map from "../../components/Map";
 import axios from "axios";
@@ -56,80 +54,54 @@ const Ride = () => {
   }, []);
 
   return (
-    <Container style={{ padding: 0 }}>
-      <Box style={{ height: "55vh" }}>
-        <Map />
-      </Box>
-      {/* <Box>
-        <Typography variant="body1" align="center" color="initial">
-          {" "}
-          Bikes Near You
-        </Typography>
-        <Typography variant="body2" align="center" color="initial">
-          {" "}
-          click to book
-        </Typography>
-      </Box> */}
-      {bikesRes ? (
-        <Box style={{ height: "44vh", overflow: "scroll" }}>
-          <List style={{ width: "100%" }}>
-            {bikesRes
-              ?.sort((a, b) => a.distance! - b.distance!)
-              .map((bike: BikeResponse, index: number) => (
-                <Fragment key={index + 1}>
-                  <Card>
-                    <CardMedia
-                      style={{ height: 170 }}
-                      image={bike.image}
-                      title="green iguana"
-                    />
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h5"
-                        align="center"
-                        component="div"
-                      >
-                        {bike.brand?.toUpperCase()} {bike.model?.toUpperCase()}{" "}
-                        {bike.makeYear}
-                        {/* <Typography
-                          variant="body2"
-                          style={{ color: "grey", float: "right" }}
-                        >
-                          {bike.ownerName}
-                        </Typography> */}
-                      </Typography>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-around",
-                        }}
-                      >
-                        <Typography variant="body1" style={{ color: "navy" }}>
-                          {bike.distance} m
-                        </Typography>
-                        <Typography variant="body1" style={{ color: "navy" }}>
-                          ₹ {bike.pricePerMinute} per minute
-                        </Typography>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Fragment>
-              ))}
-          </List>
-        </Box>
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
+    <Container>
+      <div className="container">
+        <div className="mapContainer">
+          <Map />
         </div>
-      )}
+        {bikesRes ? (
+          <Box className="bikesContainer">
+            <List style={{ width: "100%" }}>
+              {bikesRes
+                ?.sort((a, b) => a.distance! - b.distance!)
+                .map((bike) => (
+                  <div className="bikeCard">
+                    <Card key={bike.id} elevation={3}>
+                      <CardContent>
+                        <div>
+                          <div>
+                            <Typography variant="h6" component="div">
+                              {bike.brand} {bike.model}
+                            </Typography>
+                            <Typography variant="body2">
+                              {bike.licensePlate}
+                            </Typography>
+                            <Typography variant="body2">
+                              {bike.pricePerMinute}
+                            </Typography>
+                          </div>
+                          <div>
+                            <img
+                              style={{
+                                float: "right",
+                                width: "100%",
+                                maxWidth: "300px",
+                                height: "auto",
+                              }}
+                              src={bike.image}
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+            </List>
+          </Box>
+        ) : (
+          <CircularProgress />
+        )}
+      </div>
     </Container>
   );
 };
