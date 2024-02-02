@@ -57,48 +57,52 @@ const Ride = () => {
   return (
     <Container>
       <div className="container">
-        <div style={{ width: "90vw" }}>
-          <Map key={`xyz`} />
-        </div>
         {bikesRes ? (
-          <Box className="bikesContainer">
-            {bikesRes
-              ?.sort((a, b) => a.distance! - b.distance!)
-              .map((bike, index) => (
-                <div className="bikeCard" key={`x-${index}`}>
-                  <Card elevation={3}>
-                    <CardContent>
-                      <div>
+          <>
+            <div style={{ width: "90vw" }}>
+              <Map key={`xyz`} />
+            </div>
+            <Box className="bikesContainer">
+              {bikesRes
+                ?.sort((a, b) => a.distance! - b.distance!)
+                .map((bike, index) => (
+                  <div className="bikeCard" key={`x-${index}`}>
+                    <Card elevation={3}>
+                      <CardContent>
                         <div>
-                          <Typography variant="h6" component="div">
-                            {bike.brand} {bike.model}
-                          </Typography>
-                          <Typography variant="body2">
-                            {bike.licensePlate}
-                          </Typography>
-                          <Typography variant="body2">
-                            {bike.pricePerMinute}
-                          </Typography>
+                          <div>
+                            <Typography variant="h6" component="div">
+                              {bike.brand} {bike.model}
+                            </Typography>
+                            <Typography variant="body2">
+                              {bike.licensePlate}
+                            </Typography>
+                            <Typography variant="body2">
+                              {bike.pricePerMinute}
+                            </Typography>
+                          </div>
+                          <div>
+                            <img
+                              style={{
+                                float: "right",
+                                width: "100%",
+                                maxWidth: "300px",
+                                height: "auto",
+                              }}
+                              src={bike.image}
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <img
-                            style={{
-                              float: "right",
-                              width: "100%",
-                              maxWidth: "300px",
-                              height: "auto",
-                            }}
-                            src={bike.image}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-          </Box>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ))}
+            </Box>
+          </>
         ) : (
-          <CircularProgress />
+          <div className="spinnerContainer">
+            <CircularProgress />
+          </div>
         )}
       </div>
     </Container>
