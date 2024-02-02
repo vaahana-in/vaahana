@@ -107,7 +107,7 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
       </div>
 
       <div className="walkRouteMapBookingContainer">
-        <Container
+        <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -129,7 +129,7 @@ const WalkRouteMap: React.FC<WalkRouteMapComponentProps> = ({
           </div>
 
           <SelectedBikeInfo />
-        </Container>
+        </div>
         <Container
           style={{
             display: "flex",
