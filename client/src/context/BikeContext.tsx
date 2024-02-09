@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { BikeResponse } from "../constants/bike.type";
+import { BikeResponse } from "../../src/constants/bike.type";
 import axios from "axios";
 import { useAuthContext } from "./AuthContext";
 

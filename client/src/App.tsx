@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Ride from "./pages/ride/Ride";
-import WalkRouteMap from "./components/WalkRouteMap";
+import WalkRouteMap from "./components/WalkRouteMap/WalkRouteMap";
 import BookingDetails from "./pages/booking-details/BookingDetails";
 import Lend from "./pages/Lend/Lend";
 import Register from "./pages/Register/Register";
