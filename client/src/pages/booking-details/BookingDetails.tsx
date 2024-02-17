@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
 import { Delete } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import "./BookingDetails.css";
 
 const BookingDetails = () => {
   const handlePayClick = () => {
@@ -126,7 +127,7 @@ const BookingDetails = () => {
             )}
           </div>
         </div>
-        <div style={{ width: "100%", height: "50%", background: "lawngreen" }}>
+        <div className="bikeImage">
           <img
             style={{ width: "inherit", height: "100%" }}
             src={requestDetails.bikeId?.image}

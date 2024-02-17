@@ -9,6 +9,7 @@ import {
   CardMedia,
   CircularProgress,
   List,
+  Tabs,
   Typography,
 } from "@material-ui/core";
 import { LibraryAdd, Delete, Edit, History } from "@mui/icons-material";
@@ -18,8 +19,41 @@ import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
 import { BikeResponse } from "../../constants/bike.type";
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
 export default function Lend() {
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState(1);
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -52,82 +86,78 @@ export default function Lend() {
   }, [authToken]);
 
   return (
-    <Box sx={{ width: "100%", typography: "body1", marginTop: "7vh" }}>
-      <TabContext value={value}>
-        <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
-          <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Your Bikes" style={{ width: "50%" }} value="1" />
-            <Tab label="Requests" style={{ width: "50%" }} value="2" />
-          </TabList>
+    <Box sx={{ width: "100%", marginTop: "8vh" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <Tabs variant="fullWidth" value={value} onChange={handleChange}>
+          <Tab label="Your Bikes" {...a11yProps(0)} />
+          <Tab label="Requests" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={value} index={0}>
+        <Box style={{ width: "100%", overflow: "scroll", textAlign: "center" }}>
+          {yourBikes ? (
+            <List style={{ width: "100%" }}>
+              {yourBikes?.length > 0 ? (
+                yourBikes.map((bike: BikeResponse, index: number) => (
+                  <React.Fragment key={index + 1}>
+                    <Card>
+                      <CardMedia
+                        style={{ height: 180 }}
+                        image={bike.image}
+                        title="green iguana"
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h6" component="div">
+                          {bike.brand?.toUpperCase()}{" "}
+                          {bike.model?.toUpperCase()} {bike.makeYear}
+                        </Typography>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-around",
+                          }}
+                        >
+                          <Button>
+                            <History />
+                          </Button>
+                          <Button>
+                            <Delete />
+                          </Button>
+                          <Button>
+                            <Edit />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </React.Fragment>
+                ))
+              ) : (
+                <p>You have not added any bike</p>
+              )}
+            </List>
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "50vh",
+              }}
+            >
+              <CircularProgress />
+            </div>
+          )}
         </Box>
-        <TabPanel value="1">
-          <Box
-            style={{ width: "100%", overflow: "scroll", textAlign: "center" }}
-          >
-            {yourBikes ? (
-              <List style={{ width: "100%" }}>
-                {yourBikes?.length > 0 ? (
-                  yourBikes.map((bike: BikeResponse, index: number) => (
-                    <React.Fragment key={index + 1}>
-                      <Card>
-                        <CardMedia
-                          style={{ height: 180 }}
-                          image={bike.image}
-                          title="green iguana"
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="h6" component="div">
-                            {bike.brand?.toUpperCase()}{" "}
-                            {bike.model?.toUpperCase()} {bike.makeYear}
-                          </Typography>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-around",
-                            }}
-                          >
-                            <Button>
-                              <History />
-                            </Button>
-                            <Button>
-                              <Delete />
-                            </Button>
-                            <Button>
-                              <Edit />
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </React.Fragment>
-                  ))
-                ) : (
-                  <p>You have not added any bike</p>
-                )}
-              </List>
-            ) : (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "50vh",
-                }}
-              >
-                <CircularProgress />
-              </div>
-            )}
-          </Box>
-          <Button onClick={handleDialogOpen} style={{ float: "right" }}>
-            <LibraryAdd fontSize="large" />
-          </Button>
-          <AddBike open={dialogOpen} onClose={handleDialogClose} />
-        </TabPanel>
-        <TabPanel value="2">
-          <Requests />
-        </TabPanel>
-      </TabContext>
+        <Button onClick={handleDialogOpen} style={{ float: "right" }}>
+          <LibraryAdd fontSize="large" />
+        </Button>
+        <AddBike open={dialogOpen} onClose={handleDialogClose} />
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={1}>
+        <Requests />
+      </CustomTabPanel>
     </Box>
   );
 }

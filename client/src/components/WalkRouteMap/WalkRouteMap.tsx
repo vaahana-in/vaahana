@@ -5,13 +5,13 @@ import {
   DirectionsRenderer,
   MarkerF,
 } from "@react-google-maps/api";
-import logo from "../assets/motorbike.png";
+import logo from "../../assets/motorbike.png";
 import { Button, Container } from "@material-ui/core";
-import { useBikeContext } from "../context/BikeContext";
-import SelectTime from "./SelectTime";
-import SelectedBikeInfo from "./SelectedBikeInfo";
-import CallOwner from "./CallOwner";
-import RequestApproval from "./RequestApproval";
+import { useBikeContext } from "../../context/BikeContext";
+import SelectTime from "../SelectTime";
+import SelectedBikeInfo from "../SelectedBikeInfo";
+import CallOwner from "../CallOwner";
+import RequestApproval from "../RequestApproval";
 import "./WalkRouteMap.css";
 
 type WalkRouteMapComponentProps = {

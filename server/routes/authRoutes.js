@@ -7,30 +7,36 @@ const router = express.Router();
 
 // Signup route
 router.post("/register", async (req, res) => {
-  try {
-    const {
-      name,
-      email,
-      password,
-      address,
-      locationCoords,
-      profilePic,
-      phoneNumber,
-    } = req.body;
-    const user = new User({
-      name,
-      email,
-      password,
-      address,
-      locationCoords,
-      profilePic,
-      phoneNumber,
-    });
-    await user.save();
-    res.status(201).json({ message: "Registration successful", success: true });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    try {
+      const {
+        name,
+        email,
+        password,
+        address,
+        locationCoords,
+        profilePic,
+        phoneNumber,
+      } = req.body;
+      const user = new User({
+        name,
+        email,
+        password,
+        address,
+        locationCoords,
+        profilePic,
+        phoneNumber,
+      });
+      await user.save();
+      res
+        .status(201)
+        .json({ message: "Registration successful", success: true });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
   }
+  res.status(409).json({ message: "Email already taken" });
 });
 
 // Login route
