@@ -8,8 +8,6 @@ interface State extends SnackbarOrigin {
   open: boolean;
 }
 
-console.log(import.meta.env.VITE_APP_PUBLIC_SERVER_URL);
-
 function Register() {
   const [formData, setFormData] = useState({
     name: "",
@@ -66,7 +64,7 @@ function Register() {
 
     try {
       const registrationRes = await axios.post(
-        "http://localhost:3000/register",
+        `${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/register`,
         formData
       );
       if (registrationRes.data.success) {
