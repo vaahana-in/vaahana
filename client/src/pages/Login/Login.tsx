@@ -45,7 +45,7 @@ const Login = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/login",
+        `${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/login`,
         formData
       );
       if (response.data) {
