@@ -8,6 +8,8 @@ interface State extends SnackbarOrigin {
   open: boolean;
 }
 
+console.log(import.meta.env.VITE_APP_PUBLIC_SERVER_URL);
+
 function Register() {
   const [formData, setFormData] = useState({
     name: "",

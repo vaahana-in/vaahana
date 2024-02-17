@@ -1,0 +1,31 @@
+name: Deploy to Fly
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-prod-fly:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy to Production Server on Fly
+    runs-on: ubuntu-latest
+    environment: Development - Fly
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy to Production - Fly
+        run: flyctl deploy -c fly-prod.toml
+        working-directory: ./server
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_DEV }}
+
+  deploy-prod-vercel:
+    if: github.ref == 'refs/heads/main'
+    needs: deploy-prod-fly
+    name: Deploy to Production Server on Vercel
+    runs-on: ubuntu-latest
+    environment: Development - Fly
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Production - Vercel
+        run: echo "Deployed to Vercel"

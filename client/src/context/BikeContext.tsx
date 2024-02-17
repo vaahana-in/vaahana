@@ -38,7 +38,7 @@ const BikeProvider: React.FC<BikeProviderComponentProps> = ({ children }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/bike", {
+      .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/bike`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },

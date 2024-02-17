@@ -5,6 +5,7 @@ services:
     container_name: traefik-container-vaahana
     image: traefik:v2.10.6
     command:
+      # - --accesslog=true
       - --api.insecure=true
       - --providers.docker
       - --entrypoints.web.address=:80
@@ -13,33 +14,39 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - vaahana-network
 
   server:
     container_name: server-container-vaahana
     build:
       context: ./server
       dockerfile: Dockerfile
-    environment:
-      MONGO_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost:27017/vaahana
-      SERVER_HOST: server
-      SERVER_PORT: 3000
+    env_file: ./server/.env
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
     labels:
       - traefik.http.routers.server.rule=Host(`server.vaahana.localhost`)
+    networks:
+      - vaahana-network
 
   client:
     container_name: client-container-vaahana
     build:
       context: ./client
       dockerfile: Dockerfile
-    environment:
-      REACT_APP_PUBLIC_SERVER_URL: http://server:3000
+    env_file: ./client/.env
     volumes:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
     labels:
-      - traefik.http.routers.client.rule=Host(`client.vaahana.localhost`)
+      - traefik.http.routers.client.rule=Host(`client.vaahana.localhost`)    
     depends_on:
       - server
+    networks:
+      - vaahana-network
+
+networks:
+  vaahana-network:
+    driver: bridge

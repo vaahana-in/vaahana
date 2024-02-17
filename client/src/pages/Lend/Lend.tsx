@@ -75,7 +75,7 @@ export default function Lend() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/bike/owner", {
+      .get(`${import.meta.env.VITE_APP_PUBLIC_SERVER_URL}/bike/owner`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
