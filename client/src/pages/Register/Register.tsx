@@ -2,6 +2,11 @@ import { useState } from "react";
 import { TextField, Button, Container, Typography, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Box, Snackbar, SnackbarOrigin } from "@material-ui/core";
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -14,6 +19,15 @@ function Register() {
   });
 
   const [errors, setErrors] = useState({});
+
+  const [snackbarState, snackbarSetState] = useState<State>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const { vertical, horizontal, open } = snackbarState;
 
   const validatePasswords = () => {
     if (formData.password !== formData.confirmPassword) {
@@ -39,18 +53,30 @@ function Register() {
       setErrors({ ...errors, [field]: "" });
     };
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleClose = () => {
+    snackbarSetState({ ...snackbarState, open: false });
+  };
+
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
     validatePasswords();
 
-    axios
-      .post("http://localhost:3000/register", formData)
-      .then((registrationRes) => {
-        if (registrationRes.data.success) {
-          navigate("/login");
-        }
-      });
+    try {
+      const registrationRes = await axios.post(
+        "http://localhost:3000/register",
+        formData
+      );
+      if (registrationRes.data.success) {
+        navigate("/login");
+      }
+    } catch (err) {
+      snackbarSetState({ ...snackbarState, open: true });
+      setSnackbarMessage("Registration failed, " + err.response.data.message);
+      setTimeout(() => {
+        snackbarSetState({ ...snackbarState, open: false });
+      }, 2000);
+    }
   };
 
   const navigate = useNavigate();
@@ -67,6 +93,15 @@ function Register() {
         height: "98vh",
       }}
     >
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleClose}
+          message={snackbarMessage}
+          key={vertical + horizontal}
+        />
+      </Box>
       <Typography variant="h5" align="center" gutterBottom>
         Register
       </Typography>

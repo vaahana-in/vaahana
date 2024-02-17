@@ -4,6 +4,11 @@ import axios from "axios";
 
 import { useAuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Box, Snackbar, SnackbarOrigin } from "@material-ui/core";
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,6 +20,20 @@ const Login = () => {
     password: "",
   });
 
+  const [snackbarState, snackbarSetState] = useState<State>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const { vertical, horizontal, open } = snackbarState;
+
+  const handleClose = () => {
+    snackbarSetState({ ...snackbarState, open: false });
+  };
+
   const handleChange = (field) => (event) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -24,10 +43,23 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.post("http://localhost:3000/login", formData);
-    const token = response.data.token;
-    setToken(token);
-    navigate("/");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        formData
+      );
+      if (response.data) {
+        const token = response.data.token;
+        setToken(token);
+        navigate("/");
+      }
+    } catch (err) {
+      snackbarSetState({ ...snackbarState, open: true });
+      setSnackbarMessage("Login failed, " + err.response.data.error);
+      setTimeout(() => {
+        snackbarSetState({ ...snackbarState, open: false });
+      }, 2000);
+    }
   };
 
   return (
@@ -42,6 +74,15 @@ const Login = () => {
         height: "98vh",
       }}
     >
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleClose}
+          message={snackbarMessage}
+          key={vertical + horizontal}
+        />
+      </Box>
       <Typography variant="h5" align="center" gutterBottom>
         Login
       </Typography>
